@@ -1,0 +1,7 @@
+$ git log --graph --oneline --all
+
+* 971044e (tag: api/v0.103.0, master) Third commit
+| * ad8beab (HEAD -> feat/sparkling%and&new) Sparkling new feature
+|/  
+* bd33d8f (tag: api/v0.102.0) Second commit
+* b96f30f (tag: api/v0.101.0) Initial commit

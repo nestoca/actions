@@ -1,0 +1,4 @@
+$ git log --graph --oneline --all
+
+* 97b26b9 (HEAD -> master) Second commit
+* 63bb6e6 Initial commit

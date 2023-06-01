@@ -1,0 +1,8 @@
+0000000000000000000000000000000000000000 63bb6e64f776db7d808de211dbe005b70c17863e Mathieu Frenette <silphid@users.noreply.github.com> 1631826587 -0400	commit (initial): Initial commit
+63bb6e64f776db7d808de211dbe005b70c17863e 97b26b964ca2db3c5b782e1b3c1f255f895c0377 Mathieu Frenette <silphid@users.noreply.github.com> 1631826702 -0400	commit: Second commit
+97b26b964ca2db3c5b782e1b3c1f255f895c0377 e026f23033bc3feff1e3037c75f984054bdec697 Mathieu Frenette <silphid@users.noreply.github.com> 1631879753 -0400	commit: Third commit
+e026f23033bc3feff1e3037c75f984054bdec697 8729054abdb9c230e716e3645cbe4f920bd0f6ee Mathieu Frenette <silphid@users.noreply.github.com> 1631880125 -0400	merge fix/bug: Fast-forward (no commit created; -m option ignored)
+8729054abdb9c230e716e3645cbe4f920bd0f6ee e026f23033bc3feff1e3037c75f984054bdec697 Mathieu Frenette <silphid@users.noreply.github.com> 1631880292 -0400	reset: moving to e026f23033bc3feff
+e026f23033bc3feff1e3037c75f984054bdec697 0a2f77ac6f135778a72faca541e59aaa62835bd8 Mathieu Frenette <silphid@users.noreply.github.com> 1631880456 -0400	commit: Add file2.txt
+0a2f77ac6f135778a72faca541e59aaa62835bd8 27cbd4eddf9b6f5258b579ad29cd477addfe4722 Mathieu Frenette <silphid@users.noreply.github.com> 1631880477 -0400	merge fix/bug: Merge made by the 'recursive' strategy.
+27cbd4eddf9b6f5258b579ad29cd477addfe4722 56110e4da1b6d6a4123f498b685a127b41bd616d Mathieu Frenette <silphid@users.noreply.github.com> 1631881123 -0400	commit: Some change

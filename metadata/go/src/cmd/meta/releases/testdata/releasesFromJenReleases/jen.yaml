@@ -1,0 +1,3 @@
+vars:
+  PROJECT: acme
+  RELEASES: acme1 acme2 acme3

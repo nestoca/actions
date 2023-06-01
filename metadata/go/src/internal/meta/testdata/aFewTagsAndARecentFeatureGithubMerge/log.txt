@@ -1,0 +1,11 @@
+$ git log --graph --oneline --all
+
+* ed757ff (HEAD -> master, tag: arbitrary) Some change
+*   3da0626 Merge pull request #123 from nestoca/feat/sparkling
+|\  
+| * 8c9b692 (feat/sparkling) New sparkling feature
+* | d5ba5a3 Add file2.txt
+|/  
+* e026f23 (tag: unrelated, tag: api/v0.103.0, tag: api/v0.102.0) Third commit
+* 97b26b9 (tag: api/v0.101.0) Second commit
+* 63bb6e6 Initial commit

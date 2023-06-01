@@ -1,0 +1,11 @@
+$ git log --graph --oneline --all
+
+* 56110e4 (HEAD -> master, tag: arbitrary) Some change
+*   27cbd4e Merge pull request #123 from nestoca/fix/bug
+|\  
+| * 8729054 (fix/bug) Fixed bug
+* | 0a2f77a Add file2.txt
+|/  
+* e026f23 (tag: unrelated, tag: api/v0.103.0, tag: api/v0.102.0) Third commit
+* 97b26b9 (tag: api/v0.101.0) Second commit
+* 63bb6e6 Initial commit

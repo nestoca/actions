@@ -1,0 +1,48 @@
+name: Metadata
+description: Determines all the metadata for a given build, including current version, next version, git tag...
+
+inputs:
+  project:
+    description: |-
+      Project name override. If not specified, will be determined based on PROJECT env var defined
+      in jen.yaml file, and if no such file is present, it will use the current working directory
+      name.
+    required: false
+    default: ""
+  git-tag-prefix:
+    description: |-
+      Prefix to git tags used to version project.
+      In a typical project, that would simply be "v", eg: "v0.0.1" (the default).
+      In a monorepo, that should include the path to sub-project, eg: "path/to/my-project/v".
+    required: false
+    default: v
+
+outputs:
+  project:
+    description: |-
+      asdfa
+    value: ${{ steps.meta.outputs.project }}
+  version:
+    description: |-
+      asdfa
+    value: ${{ steps.meta.outputs.version }}
+  git-tag:
+    description: |-
+      asdfa
+    value: ${{ steps.meta.outputs.git-tag }}
+  docker-tag:
+    description: |-
+      asdf
+    value: ${{ steps.meta.outputs.docker-tag }}
+      
+runs:
+  using: composite
+
+  steps:
+    - id: meta
+      env:
+        GIT_TAG_PREFIX: ${{ inputs.git-tag-prefix }}
+        PROJECT: ${{ inputs.project }}
+      shell: bash
+      run: |-
+        metadata meta export
