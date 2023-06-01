@@ -21,28 +21,19 @@ outputs:
   project:
     description: |-
       asdfa
-    value: ${{ steps.meta.outputs.project }}
   version:
     description: |-
       asdfa
-    value: ${{ steps.meta.outputs.version }}
   git-tag:
     description: |-
       asdfa
-    value: ${{ steps.meta.outputs.git-tag }}
   docker-tag:
     description: |-
       asdf
-    value: ${{ steps.meta.outputs.docker-tag }}
       
 runs:
-  using: composite
-
-  steps:
-    - id: meta
-      env:
-        GIT_TAG_PREFIX: ${{ inputs.git-tag-prefix }}
-        PROJECT: ${{ inputs.project }}
-      shell: bash
-      run: |-
-        metadata meta export
+  using: docker
+  image: Dockerfile
+  env:
+    GIT_TAG_PREFIX: ${{ inputs.git-tag-prefix }}
+    PROJECT: ${{ inputs.project }}
