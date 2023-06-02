@@ -67,15 +67,6 @@ func export(now time.Time, exportFunc func(key, value string) error) error {
 }
 
 func ExecExportVarFunc(key, value string) error {
-	logging.Log("exporting %s=%s", key, value)
-	command := fmt.Sprintf("::set-output name=%s::%s", key, value)
-	cmd := exec.Command("sh", "-c", command)
-	cmd.Env = os.Environ()
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		return fmt.Errorf("executing shell command %q: %w", command, err)
-	}
+	fmt.Printf("::set-output name=%s::%s", key, value)
 	return nil
 }
