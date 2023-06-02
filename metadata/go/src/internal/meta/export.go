@@ -3,11 +3,8 @@ package meta
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"strings"
 	"time"
-
-	"github.com/nestoca/metadata/src/internal/logging"
 )
 
 // Exports all metadata env vars to shell and codefresh by executing the `export-var`
