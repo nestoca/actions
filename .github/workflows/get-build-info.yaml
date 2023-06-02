@@ -5,6 +5,7 @@ on:
       - "get-build-info/docker/**"
 jobs:
   build:
+    name: Build docker image
     runs-on: ubuntu-latest
     permissions:
       contents: "read"
