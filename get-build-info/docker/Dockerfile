@@ -11,6 +11,5 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o metadata ./src
 
 FROM alpine/git:2.36.3
 
-RUN git config --global --add safe.directory /github/workspace
 COPY --from=build /app/metadata /metadata
 ENTRYPOINT ["/metadata", "meta", "export"]
