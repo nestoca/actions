@@ -1,0 +1,29 @@
+name: Build docker image for get-build-info action
+on:
+  push:
+    paths:
+      - "get-build-info/docker/**"
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
+    steps:
+      - name: Check-out
+        uses: actions/checkout@v3
+      # - name: Get build info
+      #   id: get-build-info
+      #   uses: nestoca/actions/get-build-info@master
+      #   working-directory: get-build-info/docker
+      #   with:
+      #     project: get-build-info
+      #     git-tag-prefix: get-build-info/docker/v
+      - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        with:
+          gcloud_service_key: "${{ secrets.ACTIONS_GCP_SA_KEY }}" # Coming from 'global' pulumi project's 'gitHubActionsSAKeyBase64' output
+          registry: northamerica-northeast1-docker.pkg.dev
+          project_id: nesto-ci-78a3f2e6/actions
+          image_name: get-build-info
+          image_tag: 0.1.0
+          context: get-build-info/docker
