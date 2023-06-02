@@ -1,0 +1,40 @@
+name: get-build-info
+description: Determines all the metadata for a given build, such as current version, next version, git tag...
+
+inputs:
+  project:
+    description: |-
+      Optional project name override, defaulting to PROJECT var in jen.yaml if present,
+      otherwise uses current working directory name.
+    required: false
+    default: ""
+  git-tag-prefix:
+    description: |-
+      Optional prefix for git tags used to version project. In a typical project, that
+      would be simply "v" (the default), eg: "v0.0.1". In a monorepo, that should include
+      the path to sub-project, eg: "path/to/my-project/v".
+    required: false
+    default: v
+
+outputs:
+  project:
+    description: |-
+      Name of project being built.
+  version:
+    description: |-
+      Version being built in semver format (eg: "0.0.1" for master or
+      "0.1350.0-feat-mo-123-some-feature-6e9580872-2023-05-09_20_17_42" for PRs).
+  git-tag:
+    description: |-
+      Git tag to mark current build in git (eg: "v0.0.1" or "path/to/my-project/v0.0.1").
+  docker-tag:
+    description: |-
+      Tag for docker image being built (eg: "0.0.1" for master or
+      "0.1350.0-feat-mo-123-some-feature-6e9580872-2023-05-09_20_17_42" for PRs).
+      
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    GIT_TAG_PREFIX: ${{ inputs.git-tag-prefix }}
+    PROJECT: ${{ inputs.project }}
