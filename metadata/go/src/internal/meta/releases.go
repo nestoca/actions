@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/nestoca/cx/src/internal/logging"
-	"github.com/nestoca/cx/src/internal/meta/jen"
+	"github.com/nestoca/metadata/src/internal/logging"
+	"github.com/nestoca/metadata/src/internal/meta/jen"
 )
 
 func GetReleases() (string, error) {

@@ -7,7 +7,7 @@ import (
 // NewRoot creates the root cobra command
 func NewRoot() *cobra.Command {
 	c := &cobra.Command{
-		Use:          "cx",
+		Use:          "metadata",
 		Short:        "nesto's CI/CD/Continuous Everyting CLI helper",
 		Long:         "nesto's CI/CD/Continuous Everyting CLI helper",
 		SilenceUsage: true,

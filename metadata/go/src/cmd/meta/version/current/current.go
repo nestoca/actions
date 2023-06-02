@@ -3,7 +3,7 @@ package current
 import (
 	"fmt"
 
-	"github.com/nestoca/cx/src/internal/meta"
+	"github.com/nestoca/metadata/src/internal/meta"
 	"github.com/spf13/cobra"
 )
 

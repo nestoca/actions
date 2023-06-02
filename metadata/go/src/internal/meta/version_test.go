@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/coreos/go-semver/semver"
-	"github.com/nestoca/cx/src/internal/testutil"
+	"github.com/nestoca/metadata/src/internal/testutil"
 	"github.com/stretchr/testify/assert"
 )
 

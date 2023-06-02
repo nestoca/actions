@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/nestoca/cx/src/internal/promote"
+	"github.com/nestoca/metadata/src/internal/promote"
 	"github.com/spf13/cobra"
 )
 
@@ -41,7 +41,7 @@ func New() *cobra.Command {
 	return cmd
 }
 
-//validate validates the runtime args
+// validate validates the runtime args
 func validate() error {
 	for _, envKey := range []string{"RELEASES", "DOCKER_TAG", "REGISTRY", "GENERIC_CHART_VERSION", "RELEASE_TEMPLATE", "VALUES_TEMPLATE"} {
 		if _, present := os.LookupEnv(envKey); !present {

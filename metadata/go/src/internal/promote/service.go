@@ -11,7 +11,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/nestoca/cx/src/internal/helpers"
+	"github.com/nestoca/metadata/src/internal/helpers"
 	"gopkg.in/yaml.v3"
 )
 

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nestoca/cx/src/internal/logging"
+	"github.com/nestoca/metadata/src/internal/logging"
 )
 
 // Exports all metadata env vars to shell and codefresh by executing the `export-var`

@@ -5,15 +5,15 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/nestoca/cx/src/cmd"
-	"github.com/nestoca/cx/src/cmd/meta"
-	"github.com/nestoca/cx/src/cmd/meta/export"
-	"github.com/nestoca/cx/src/cmd/meta/project"
-	"github.com/nestoca/cx/src/cmd/meta/releases"
-	"github.com/nestoca/cx/src/cmd/meta/version"
-	"github.com/nestoca/cx/src/cmd/meta/version/current"
-	"github.com/nestoca/cx/src/cmd/meta/version/next"
-	"github.com/nestoca/cx/src/cmd/promote"
+	"github.com/nestoca/metadata/src/cmd"
+	"github.com/nestoca/metadata/src/cmd/meta"
+	"github.com/nestoca/metadata/src/cmd/meta/export"
+	"github.com/nestoca/metadata/src/cmd/meta/project"
+	"github.com/nestoca/metadata/src/cmd/meta/releases"
+	"github.com/nestoca/metadata/src/cmd/meta/version"
+	"github.com/nestoca/metadata/src/cmd/meta/version/current"
+	"github.com/nestoca/metadata/src/cmd/meta/version/next"
+	"github.com/nestoca/metadata/src/cmd/promote"
 )
 
 func main() {

@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/nestoca/cx/src/internal/testutil"
+	"github.com/nestoca/metadata/src/internal/testutil"
 )
 
 func TestProjectFromMetaFile(t *testing.T) {

@@ -3,7 +3,7 @@ package releases
 import (
 	"testing"
 
-	"github.com/nestoca/cx/src/internal/testutil"
+	"github.com/nestoca/metadata/src/internal/testutil"
 )
 
 func TestReleasesFromJenReleases(t *testing.T) {

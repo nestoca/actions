@@ -1,7 +1,7 @@
 package export
 
 import (
-	"github.com/nestoca/cx/src/internal/meta"
+	"github.com/nestoca/metadata/src/internal/meta"
 	"github.com/spf13/cobra"
 )
 
@@ -11,7 +11,7 @@ func New() *cobra.Command {
 		Use:   "export",
 		Short: "Exports all metadata env vars to shell and codefresh",
 		Long: "Exports all metadata env vars to shell and codefresh. " +
-			"Note: the output of this command must be sourced by using this syntax: $(cx meta export)",
+			"Note: the output of this command must be sourced by using this syntax: $(metadata meta export)",
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return run()
