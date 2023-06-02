@@ -7,35 +7,32 @@ import (
 	"time"
 )
 
-// Exports all metadata env vars to shell and codefresh by executing the `export-var`
-// bash script for each one (ie: PROJECT, VERSION, GIT_TAG, DOCKER_TAG).
-// Note: Stdout must be sourced by caller in order for those vars to actually be
-// exported to current shell (ie: by using the `$(...)` syntax).
+// Exports all metadata variables to GitHub Actions outputs.
 func Export() error {
-	return export(time.Now(), ExecExportVarFunc)
+	return export(time.Now(), SetGitHubOutputFunc)
 }
 
 func export(now time.Time, exportFunc func(key, value string) error) error {
-	// PROJECT
+	// Output project
 	project, err := GetProjectName()
 	if err != nil {
-		return fmt.Errorf("determining PROJECT: %w", err)
+		return fmt.Errorf("determining project: %w", err)
 	}
-	if err := exportFunc("PROJECT", project); err != nil {
+	if err := exportFunc("project", project); err != nil {
 		return err
 	}
 
-	// VERSION
+	// Output version
 	semver, err := GetNextVersion(now)
 	if err != nil {
-		return fmt.Errorf("determining VERSION: %w", err)
+		return fmt.Errorf("determining version: %w", err)
 	}
 	version := semver.String()
 	if err := exportFunc("version", version); err != nil {
 		return err
 	}
 
-	// GIT_TAG
+	// Output git-tag
 	gitTagPrefix, ok := os.LookupEnv("GIT_TAG_PREFIX")
 	if !ok {
 		return fmt.Errorf("missing required GIT_TAG_PREFIX env var")
@@ -45,16 +42,16 @@ func export(now time.Time, exportFunc func(key, value string) error) error {
 		return err
 	}
 
-	// DOCKER_TAG
+	// Output docker-tag
 	dockerTag := strings.ReplaceAll(version, "+", "-")
 	if err := exportFunc("docker-tag", dockerTag); err != nil {
 		return err
 	}
 
-	// RELEASES
+	// Output releases
 	releases, err := GetReleases()
 	if err != nil {
-		return fmt.Errorf("determining RELEASES: %w", err)
+		return fmt.Errorf("determining releases: %w", err)
 	}
 	if err := exportFunc("releases", releases); err != nil {
 		return err
@@ -63,7 +60,23 @@ func export(now time.Time, exportFunc func(key, value string) error) error {
 	return nil
 }
 
-func ExecExportVarFunc(key, value string) error {
-	fmt.Printf("::set-output name=%s::%s", key, value)
+func SetGitHubOutputFunc(key, value string) error {
+	outputFilePath := os.Getenv("GITHUB_OUTPUT")
+
+	if outputFilePath == "" {
+		return fmt.Errorf("GITHUB_OUTPUT environment variable not set")
+	}
+
+	file, err := os.OpenFile(outputFilePath, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	_, err = fmt.Fprintf(file, "%s=%s", key, value)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
