@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
       - name: Get build info
         id: info
-        uses: nestoca/actions/get-build-info@master
+        uses: nestoca/actions/get-build-info@v1
         with:
           working-directory: get-build-info/docker
           project: get-build-info
@@ -37,6 +37,6 @@ jobs:
           image_tag: ${{ steps.info.outputs.docker-tag }},latest
           context: get-build-info/docker
       - name: Tag commit
-        uses: nestoca/actions/tag-commit@master
+        uses: nestoca/actions/tag-commit@v1
         with:
           tag: ${{ steps.info.outputs.git-tag }}
