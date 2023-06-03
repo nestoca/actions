@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/nestoca/metadata/src/internal/logging"
 	"github.com/nestoca/metadata/src/internal/meta/jen"
@@ -15,8 +16,8 @@ func GetProjectName() (string, error) {
 		return "", fmt.Errorf("getting working dir: %w", err)
 	}
 
-	name, ok := os.LookupEnv("PROJECT")
-	if ok && name != "" {
+	name := os.Getenv("PROJECT")
+	if name != "" {
 		logging.Log("Using name from PROJECT env var")
 		return name, nil
 	}
@@ -32,6 +33,16 @@ func GetProjectName() (string, error) {
 				return name, nil
 			}
 		}
+	}
+
+	githubRepository := os.Getenv("GITHUB_REPOSITORY")
+	if githubRepository != "" {
+		logging.Log("Using name from GITHUB_REPOSITORY env var")
+		tokens := strings.Split(githubRepository, "/")
+		if len(tokens) != 2 {
+			return "", fmt.Errorf("malformed GITHUB_REPOSITORY env var: %q", githubRepository)
+		}
+		return tokens[1], nil
 	}
 
 	logging.Log("Using name of current directory")

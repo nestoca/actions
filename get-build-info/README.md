@@ -4,12 +4,16 @@ That action allows to determine all the metadata for current build and would typ
 
 # Inputs
 
-- `project`: Optional project name override, defaulting to PROJECT var in jen.yaml if present, otherwise uses current working directory name.
+- `project`: Optional project name override.
 - `git-tag-prefix`: Optional prefix for git tags used to version project. In a typical project, that would be simply "v" (the default), eg: "v0.0.1". In a monorepo, that should include the path to sub-project, eg: "path/to/my-project/v".
 
 # Outputs
 
-- `project`: Name of project being built.
+- `project`: Name of project being built, resolved in this order of precedence:
+  - Explicit `project` input passed to this action.
+  - `PROJECT` var from `jen.yaml` file in project's root.
+  - GitHub repo name derived from `GITHUB_REPOSITORY` env var (eg: `nestoca/hello-world` results in `hello-world`).
+  - Current working directory name.
 - `version`: Version being built in semver format (eg: "0.0.1" for master or
   "0.1350.0-feat-mo-123-some-feature-6e9580872-2023-05-09_20_17_42" for PRs).
 - `git-tag`: Git tag to mark current build in git (eg: "v0.0.1" or
