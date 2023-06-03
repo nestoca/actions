@@ -2,6 +2,12 @@ name: get-build-info
 description: Determines all the metadata for a given build, such as current version, next version, git tag...
 
 inputs:
+  working-directory:
+    description: |-
+      Optional working directory within which to execute this action, defaulting to
+      `GITHUB_WORKSPACE` env var.
+    required: false
+    default: "${{ GITHUB_WORKSPACE }}"
   project:
     description: |-
       Optional project name override, defaulting to PROJECT var in jen.yaml if present,
@@ -36,5 +42,6 @@ runs:
   using: docker
   image: docker://northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/get-build-info:0.1.0
   env:
+    WORK_DIR: ${{ inputs.working-directory }}
     GIT_TAG_PREFIX: ${{ inputs.git-tag-prefix }}
     PROJECT: ${{ inputs.project }}
