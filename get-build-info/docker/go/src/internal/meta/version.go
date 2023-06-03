@@ -37,6 +37,7 @@ func GetCurrentVersionAndTagCommit() (*semver.Version, string, error) {
 		return nil, noTagCommit, fmt.Errorf("getting latest tag on HEAD: %w", err)
 	}
 	latestTagOnHead := strings.TrimSuffix(stdout, "\n")
+	logging.Log("Latest tag on HEAD: %s", latestTagOnHead)
 
 	// Get tag's commit
 	stdout, _, err = shell.Exec("git rev-list -n 1 %s", latestTagOnHead)
@@ -44,6 +45,7 @@ func GetCurrentVersionAndTagCommit() (*semver.Version, string, error) {
 		return nil, noTagCommit, fmt.Errorf("getting tag's commit: %w", err)
 	}
 	tagCommit := strings.TrimSuffix(stdout, "\n")
+	logging.Log("Latest tag's commit: %s", tagCommit)
 
 	// Get all tags containing commit SHA (possibly more recent)
 	stdout, _, err = shell.Exec("git tag --contains %s", tagCommit)
