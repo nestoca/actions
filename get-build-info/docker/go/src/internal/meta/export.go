@@ -79,7 +79,7 @@ func SetGitHubOutputFunc(key, value string) error {
 	}
 	defer file.Close()
 
-	_, err = fmt.Fprintf(file, "%s=%s", key, value)
+	_, err = fmt.Fprintf(file, "%s=%s\n", key, value)
 	if err != nil {
 		return err
 	}
