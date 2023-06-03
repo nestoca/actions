@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/nestoca/metadata/src/internal/helpers"
+	"github.com/nestoca/metadata/src/internal/logging"
 )
 
 // Exports all metadata variables to GitHub Actions outputs.
@@ -79,6 +80,7 @@ func SetGitHubOutputFunc(key, value string) error {
 	}
 	defer file.Close()
 
+	logging.Log("Exporting %s=%s\n", key, value)
 	_, err = fmt.Fprintf(file, "%s=%s\n", key, value)
 	if err != nil {
 		return err

@@ -30,7 +30,7 @@ func GetCurrentVersionAndTagCommit() (*semver.Version, string, error) {
 		// No tags
 		if strings.Contains(stderr, "No names found") ||
 			strings.Contains(stderr, "aucun nom trouvé") {
-			logging.Log("current version: %s", zeroVersion)
+			logging.Log("Current version: %s", zeroVersion)
 			return zeroVersion, noTagCommit, nil
 		}
 		return nil, noTagCommit, fmt.Errorf("getting latest tag on HEAD: %w", err)
@@ -69,7 +69,7 @@ func GetCurrentVersionAndTagCommit() (*semver.Version, string, error) {
 		}
 	}
 
-	logging.Log("current version: %s", currentVersion)
+	logging.Log("Current version: %s", currentVersion)
 	return currentVersion, tagCommit, nil
 }
 
@@ -115,7 +115,7 @@ func GetNextVersion(now time.Time) (*semver.Version, error) {
 		}
 	}
 
-	logging.Log("next version: %s", nextVersion)
+	logging.Log("Next version: %s", nextVersion)
 	return nextVersion, nil
 }
 
@@ -156,9 +156,9 @@ func getLastMergedBranchSinceCommit(commit string) (string, error) {
 	// Parse branch from merge log
 	branch := getBranchFromMergeLogLine(lines[0])
 	if branch != "" {
-		logging.Log("last merged branch: %s", branch)
+		logging.Log("Last merged branch: %s", branch)
 	} else {
-		logging.Log("no merged branch found")
+		logging.Log("No merged branch found")
 	}
 	return branch, nil
 }
@@ -174,10 +174,10 @@ func getShortCommitSHA() (string, error) {
 func bumpVersion(version *semver.Version, mergedBranch string) *semver.Version {
 	newVersion := semver.New(version.String())
 	if strings.HasPrefix(mergedBranch, "fix/") {
-		logging.Log("bumping patch version")
+		logging.Log("Bumping patch version")
 		newVersion.BumpPatch()
 	} else { // "feat/" or any other branch name
-		logging.Log("bumping minor version")
+		logging.Log("Bumping minor version")
 		newVersion.BumpMinor()
 	}
 	return newVersion
@@ -189,6 +189,6 @@ func getCurrentBranch() (string, error) {
 		return "", fmt.Errorf("getting current branch: %w", err)
 	}
 	branch := strings.TrimSpace(stdout)
-	logging.Log("current branch: %s", branch)
+	logging.Log("Current branch: %s", branch)
 	return branch, nil
 }
