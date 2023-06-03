@@ -23,6 +23,7 @@ func GetCurrentVersionAndTagCommit() (*semver.Version, string, error) {
 	if !ok {
 		return nil, "", fmt.Errorf("missing required GIT_TAG_PREFIX env var")
 	}
+	logging.Log("Using GIT_TAG_PREFIX: %s", tagPrefix)
 
 	// Get latest tag on HEAD
 	stdout, stderr, err := shell.Exec("git describe --abbrev=0 --tags --match %s\\*", tagPrefix)
