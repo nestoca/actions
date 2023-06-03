@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Check-out
         uses: actions/checkout@v3
-        with:
-          set-safe-directory: true
       # - name: Get build info
       #   id: get-build-info
       #   uses: nestoca/actions/get-build-info@master
