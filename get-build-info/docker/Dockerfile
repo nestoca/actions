@@ -12,4 +12,4 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o metadata ./src
 FROM alpine/git:2.36.3
 
 COPY --from=build /app/metadata /metadata
-ENTRYPOINT [sh, -c, "cd ${WORK_DIR:-.}; /metadata meta export"]
+ENTRYPOINT ["sh", "-c", "cd ${WORK_DIR:-.}; /metadata meta export"]
