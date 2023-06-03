@@ -7,7 +7,7 @@ inputs:
       Optional working directory within which to execute this action, defaulting to
       `GITHUB_WORKSPACE` env var.
     required: false
-    default: "${{ GITHUB_WORKSPACE }}"
+    default: "${{ env.GITHUB_WORKSPACE }}"
   project:
     description: |-
       Optional project name override, defaulting to PROJECT var in jen.yaml if present,
