@@ -12,7 +12,7 @@ inputs:
         - Tag reference (eg: `v0.0.1`)
         - etc.
     required: false
-    default: ${{ env.GITHUB_SHA }}
+    default: ${{ github.sha }}
   tag:
     description: Value of tag to add to given commit.
     required: true
