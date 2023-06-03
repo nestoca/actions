@@ -34,7 +34,7 @@ jobs:
           registry: northamerica-northeast1-docker.pkg.dev
           project_id: nesto-ci-78a3f2e6/actions
           image_name: get-build-info
-          image_tag: ${{ steps.info.outputs.docker-tag }}
+          image_tag: ${{ steps.info.outputs.docker-tag }},latest
           context: get-build-info/docker
       - name: Tag commit
         uses: nestoca/actions/tag-commit@master

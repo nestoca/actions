@@ -40,7 +40,7 @@ outputs:
       
 runs:
   using: docker
-  image: docker://northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/get-build-info:0.1.0
+  image: docker://northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/get-build-info:latest
   env:
     WORK_DIR: ${{ inputs.working-directory }}
     GIT_TAG_PREFIX: ${{ inputs.git-tag-prefix }}
