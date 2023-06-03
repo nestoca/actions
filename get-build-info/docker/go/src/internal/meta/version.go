@@ -164,7 +164,7 @@ func getLastMergedBranchSinceCommit(commit string) (string, error) {
 }
 
 func getShortCommitSHA() (string, error) {
-	stdout, _, err := shell.Exec("git -c safe.directory=$(git rev-parse --show-toplevel) rev-parse --short HEAD")
+	stdout, _, err := shell.Exec("git -c safe.directory=/github/workspace rev-parse --short HEAD")
 	if err != nil {
 		return "", fmt.Errorf("getting short commit sha: %w", err)
 	}
@@ -184,7 +184,7 @@ func bumpVersion(version *semver.Version, mergedBranch string) *semver.Version {
 }
 
 func getCurrentBranch() (string, error) {
-	stdout, _, err := shell.Exec("git -c safe.directory=$(git rev-parse --show-toplevel) rev-parse --abbrev-ref HEAD")
+	stdout, _, err := shell.Exec("git -c safe.directory=/github/workspace rev-parse --abbrev-ref HEAD")
 	if err != nil {
 		return "", fmt.Errorf("getting current branch: %w", err)
 	}
