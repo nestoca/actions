@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - "get-build-info/docker/**"
+concurrency:
+  group: get-build-info
 jobs:
   build:
     name: Build docker image
