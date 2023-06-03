@@ -30,7 +30,7 @@ func ConfigureGithubWorkspaceAsSafeDirectory() error {
 		return nil
 	}
 
-	logging.Log("configuring GITHUB_WORKSPACE as safe directory: %q", githubWorkspace)
+	logging.Log("configuring GITHUB_WORKSPACE as safe directory: %s", githubWorkspace)
 	_, _, err := shell.Exec(fmt.Sprintf("git config --global --add safe.directory %s", githubWorkspace))
 	if err != nil {
 		return fmt.Errorf("configuring GITHUB_WORKSPACE as safe directory: %w", err)
