@@ -5,6 +5,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"github.com/nestoca/metadata/src/internal/helpers"
 )
 
 // Exports all metadata variables to GitHub Actions outputs.
@@ -13,6 +15,11 @@ func Export() error {
 }
 
 func export(now time.Time, exportFunc func(key, value string) error) error {
+	err := helpers.ConfigureGithubWorkspaceAsSafeDirectory()
+	if err != nil {
+		return err
+	}
+
 	// Output project
 	project, err := GetProjectName()
 	if err != nil {
@@ -62,7 +69,6 @@ func export(now time.Time, exportFunc func(key, value string) error) error {
 
 func SetGitHubOutputFunc(key, value string) error {
 	outputFilePath := os.Getenv("GITHUB_OUTPUT")
-
 	if outputFilePath == "" {
 		return fmt.Errorf("GITHUB_OUTPUT environment variable not set")
 	}
