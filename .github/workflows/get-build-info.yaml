@@ -13,13 +13,13 @@ jobs:
     steps:
       - name: Check-out
         uses: actions/checkout@v3
-      - name: Get build info
-        id: info
-        uses: nestoca/actions/get-build-info@v1
-        with:
-          working-directory: get-build-info/docker
-          project: get-build-info
-          git-tag-prefix: get-build-info/docker/v
+      # - name: Get build info
+      #   id: info
+      #   uses: nestoca/actions/get-build-info@v1
+      #   with:
+      #     working-directory: get-build-info/docker
+      #     project: get-build-info
+      #     git-tag-prefix: get-build-info/docker/v
       - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
         with:
           # Base-64 encoded JSON key of GCP service account to use for pushing image to Google Artifact Registry `actions` repo.
@@ -29,9 +29,9 @@ jobs:
           registry: northamerica-northeast1-docker.pkg.dev
           project_id: nesto-ci-78a3f2e6/actions
           image_name: get-build-info
-          image_tag: ${{ steps.info.outputs.docker-tag }} 0.1.0
+          image_tag: 0.1.0 #{{ steps.info.outputs.docker-tag }}
           context: get-build-info/docker
       - name: Tag commit
         uses: nestoca/actions/tag-commit@v1
         with:
-          tag: ${{ steps.info.outputs.git-tag }}
+          tag: 0.1.0 #{{ steps.info.outputs.git-tag }}
