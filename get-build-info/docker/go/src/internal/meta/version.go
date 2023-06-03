@@ -23,7 +23,7 @@ func GetCurrentVersionAndTagCommit() (*semver.Version, string, error) {
 	if !ok {
 		return nil, "", fmt.Errorf("missing required GIT_TAG_PREFIX env var")
 	}
-	logging.Log("Using GIT_TAG_PREFIX: %s", tagPrefix)
+	logging.Log("Using tag prefix: %s", tagPrefix)
 
 	// Get latest tag on HEAD
 	stdout, stderr, err := shell.Exec("git describe --abbrev=0 --tags --match %s\\*", tagPrefix)
@@ -31,7 +31,7 @@ func GetCurrentVersionAndTagCommit() (*semver.Version, string, error) {
 		// No tags
 		if strings.Contains(stderr, "No names found") ||
 			strings.Contains(stderr, "aucun nom trouvé") {
-			logging.Log("Current version: %s", zeroVersion)
+			logging.Log("No matching tag found, assuming current version: %s", zeroVersion)
 			return zeroVersion, noTagCommit, nil
 		}
 		return nil, noTagCommit, fmt.Errorf("getting latest tag on HEAD: %w", err)

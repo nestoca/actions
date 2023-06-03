@@ -38,9 +38,6 @@ func export(now time.Time, exportFunc func(key, value string) error) error {
 	}
 
 	gitTag := gitTagPrefix + version
-	if err := exportFunc("git-tag", gitTag); err != nil {
-		return err
-	}
 
 	dockerTag := strings.ReplaceAll(version, "+", "-")
 
@@ -55,6 +52,9 @@ func export(now time.Time, exportFunc func(key, value string) error) error {
 		return err
 	}
 	if err := exportFunc("version", version); err != nil {
+		return err
+	}
+	if err := exportFunc("git-tag", gitTag); err != nil {
 		return err
 	}
 	if err := exportFunc("docker-tag", dockerTag); err != nil {
@@ -79,7 +79,7 @@ func SetGitHubOutputFunc(key, value string) error {
 	}
 	defer file.Close()
 
-	logging.Log("%s: %s\n", key, value)
+	logging.Log("%s: %s", key, value)
 	_, err = fmt.Fprintf(file, "%s=%s\n", key, value)
 	if err != nil {
 		return err
