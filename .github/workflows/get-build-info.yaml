@@ -44,13 +44,9 @@ jobs:
           tag: ${{ steps.info.outputs.git-tag }}
       - name: Promote image in action
         id: promote
-        uses: silphid/actions/replace@master
+        uses: silphid/actions/replace-in-repo@master
         with:
+          message: "Promote image in get-build-info action.yaml to: ${{ steps.info.output.docker-tag }}"
           glob: "get-build-info/action.yaml"
           search: "(?:image: docker://northamerica-northeast1-docker\\.pkg\\.dev/nesto-ci-78a3f2e6/actions/get-build-info:)\\d+.\\d+.\\d+"
           replace: ${{ steps.info.output.docker-tag }}
-      - if: ${{ steps.promote.outputs.changes != '0' }}
-        run: |-
-          git add .
-          git commit -m 'Promote image in get-build-info action.yaml to: ${{ steps.info.output.docker-tag }}'
-          git push
