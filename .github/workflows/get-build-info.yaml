@@ -39,6 +39,6 @@ jobs:
           image_tag: ${{ steps.info.outputs.docker-tag }},latest
           context: get-build-info/docker
       - name: Tag commit
-        uses: nestoca/actions/tag-commit@v1
+        uses: silphid/actions/tag-commit@v1
         with:
           tag: ${{ steps.info.outputs.git-tag }}
