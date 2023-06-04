@@ -42,7 +42,7 @@ jobs:
         uses: silphid/actions/tag-commit@v1
         with:
           tag: ${{ steps.info.outputs.git-tag }}
-      - name: Promote image in get-build-info action.yaml
+      - name: Promote image in action
         id: promote
         uses: silphid/actions/replace@master
         with:
@@ -51,7 +51,6 @@ jobs:
           replace: ${{ steps.info.output.docker-tag }}
       - if: ${{ steps.promote.outputs.changes != '0' }}
         run: |-
-          git pull
           git add .
           git commit -m 'Promote image in get-build-info action.yaml to: ${{ steps.info.output.docker-tag }}'
           git push
