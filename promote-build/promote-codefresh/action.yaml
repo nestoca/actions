@@ -30,9 +30,8 @@ runs:
     - uses: docker://northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/promote-codefresh:0.1.0
       with:
         workdir: infra/${{ inputs.env }}
-        mounts:
-          - source: ${{ github.workspace }}/infra
-            target: /infra
+        volumes:
+          - ${{ github.workspace }}/infra:/infra
         env:
           RELEASES: ${{ inputs.releases }}
           RELEASE_TEMPLATE: /infra/templates/promote-service/release.yaml.gotmpl
