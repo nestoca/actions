@@ -31,7 +31,7 @@ runs:
       shell: bash
       run: |-
         docker run --rm \
-          --workdir infra/${{ inputs.env }} \
+          --workdir /infra/${{ inputs.env }} \
           --env RELEASES="${{ inputs.releases }}" \
           --env RELEASE_TEMPLATE="/infra/templates/promote-service/release.yaml.gotmpl" \
           --env VALUES_TEMPLATE="/infra/templates/promote-service/values.yaml.gotmpl" \
