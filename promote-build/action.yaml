@@ -21,6 +21,9 @@ inputs:
       "joy" (using `catalog` repo, Joy and ArgoCD).
     required: false
     default: codefresh
+  token:
+    description: GitHub token to use to check out infra repo.
+    required: true
       
 runs:
   using: composite
@@ -31,6 +34,7 @@ runs:
         version: ${{ inputs.version }}
         releases: ${{ inputs.releases }}
         env: ${{ inputs.env }}
+        token: ${{ inputs.token }}
     - if: inputs.cd != 'codefresh'
       shell: bash
       run: |
