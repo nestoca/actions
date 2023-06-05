@@ -51,7 +51,7 @@ jobs:
         uses: silphid/actions/replace-in-repo@master
         with:
           message: |-
-            Promote image in get-build-info action to: ${{ steps.info.outputs.docker-tag }}
+            Promote image in get-build-info action to ${{ steps.info.outputs.docker-tag }}
           glob: get-build-info/action.yaml
           search: |-
             (?<=^\s*image: docker://northamerica-northeast1-docker\.pkg\.dev/nesto-ci-78a3f2e6/actions/get-build-info:).+$
