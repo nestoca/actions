@@ -20,10 +20,6 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
-      - name: Set git identity
-        run: |-
-            git config --global user.email "nestobot@nesto.ca"
-            git config --global user.name "nestobot"
       - name: Get build info
         id: info
         uses: nestoca/actions/get-build-info@v1
@@ -46,6 +42,10 @@ jobs:
         uses: silphid/actions/tag-commit@v1
         with:
           tag: ${{ steps.info.outputs.git-tag }}
+      - name: Set git identity
+        run: |-
+            git config --global user.email "nestobot@nesto.ca"
+            git config --global user.name "nestobot"
       - name: Promote image in action
         id: promote
         uses: silphid/actions/replace-in-repo@master
