@@ -15,7 +15,7 @@ jobs:
       contents: "read"
       id-token: "write"
     steps:
-      - name: Check-out
+      - name: Check out
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_TOKEN }}
@@ -27,7 +27,8 @@ jobs:
           working-directory: get-build-info/docker
           project: get-build-info
           git-tag-prefix: get-build-info/docker/v
-      - uses: nestoca/actions/build-image@master
+      - name: Build image
+        uses: nestoca/actions/build-image@master
         with:
           name: get-build-info
           tags: ${{ steps.info.outputs.docker-tag }},latest
