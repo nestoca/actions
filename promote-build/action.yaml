@@ -29,7 +29,7 @@ runs:
   using: composite
   steps:
     - if: inputs.cd == 'codefresh'
-      uses: nestoca/actions/promote-build/promote-codefresh
+      uses: nestoca/actions/promote-build/promote-codefresh@master
       with:
         version: ${{ inputs.version }}
         releases: ${{ inputs.releases }}
