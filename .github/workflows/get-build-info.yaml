@@ -28,7 +28,7 @@ jobs:
           project: get-build-info
           git-tag-prefix: get-build-info/docker/v
       - name: Build image
-        uses: nestoca/actions/build-image@master
+        uses: nestoca/actions/build-image@v1
         with:
           name: get-build-info
           tags: ${{ steps.info.outputs.docker-tag }},latest
