@@ -1,0 +1,31 @@
+name: promote-build
+description: >-
+  Promotes build version in given releases of target environment using a certain CD mode.
+  Typically called at end of build workflow to auto-promote new build to some environment.
+
+inputs:
+  version:
+    description: Version of build to promote.
+    required: true
+  releases:
+    description: Comma-delimited list of releases to promote.
+    required: true
+  env:
+    description: Target environment to promote to (defaults to `qa`).
+    required: false
+    default: qa
+  cd:
+    description: >-
+      Optional CD mode to use, either "legacy" (using `*-infrastucture` repos and Cloud Build),
+      "codefresh" (using `infra` monorepo, Codefresh and helmfile, the default), or
+      "joy" (using `catalog` repo, Joy and ArgoCD).
+    required: false
+    default: codefresh
+      
+runs:
+  using: composite
+  steps:
+    - if: inputs.cd == 'codefresh'
+      run: |-
+        asdf
+      shell: bash

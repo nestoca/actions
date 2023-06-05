@@ -1,15 +1,15 @@
-name: Build get-build-info image
+name: Build promote-codefresh image
 on:
   push:
     branches:
       - master
     paths:
-      - "get-build-info/docker/**"
+      - "promote-build/promote-codefresh-docker/**"
 concurrency:
   group: get-build-info
 jobs:
   build:
-    name: Build get-build-info image
+    name: Build promote-codefresh image
     runs-on: ubuntu-latest
     permissions:
       contents: "read"
@@ -24,9 +24,9 @@ jobs:
         id: info
         uses: nestoca/actions/get-build-info@v1
         with:
-          working-directory: get-build-info/docker
-          project: get-build-info
-          git-tag-prefix: get-build-info/docker/v
+          working-directory: promote-build/promote-codefresh-docker
+          project: promote-codefresh
+          git-tag-prefix: promote-codefresh/v
       - name: Build image
         uses: nestoca/actions/build-image@v1
         with:
@@ -34,7 +34,7 @@ jobs:
           tags: ${{ steps.info.outputs.docker-tag }},latest
           key: ${{ secrets.GCP_KEY }}
           target: actions
-          context: get-build-info/docker
+          context: promote-build/promote-codefresh-docker
       - name: Tag commit
         uses: silphid/actions/tag-commit@v1
         with:
@@ -48,9 +48,9 @@ jobs:
         uses: silphid/actions/replace-in-repo@v1
         with:
           message: |-
-            Promote image in get-build-info action to ${{ steps.info.outputs.docker-tag }}
-          glob: get-build-info/action.yaml
+            Promote image in promote-build action to ${{ steps.info.outputs.docker-tag }}
+          glob: promote-build/action.yaml
           search: |-
-            (?<=^\s*image: docker://.+/actions/get-build-info:).+$
+            (?<=^\s*image: docker://.+/actions/promote-codefresh:).+$
           replace: |-
             ${{ steps.info.outputs.docker-tag }}

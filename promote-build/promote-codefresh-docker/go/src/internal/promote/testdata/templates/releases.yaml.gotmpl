@@ -1,0 +1,7 @@
+{{ .Release }}:
+{{- if eq .Mode "NEW" }}
+  chart: generic
+  version: {{ .Env.GENERIC_CHART_VERSION }}
+  installed: false
+{{- end }}  
+  tag: {{ .Env.DOCKER_TAG }}
