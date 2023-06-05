@@ -49,7 +49,7 @@ jobs:
         with:
           message: |-
             Promote image in promote-build action to ${{ steps.info.outputs.docker-tag }}
-          glob: promote-build/action.yaml
+          glob: promote-build/promote-codefresh/action.yaml
           search: |-
             (?<=^\s*image: docker://.+/actions/promote-codefresh:).+$
           replace: |-

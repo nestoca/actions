@@ -8,7 +8,7 @@ inputs:
     description: Version of build to promote.
     required: true
   releases:
-    description: Comma-delimited list of releases to promote.
+    description: Space-delimited list of releases to promote.
     required: true
   env:
     description: Target environment to promote to (defaults to `qa`).
@@ -26,6 +26,13 @@ runs:
   using: composite
   steps:
     - if: inputs.cd == 'codefresh'
-      run: |-
-        asdf
+      uses: ./promote-codefresh
+      with:
+        version: ${{ inputs.version }}
+        releases: ${{ inputs.releases }}
+        env: ${{ inputs.env }}
+    - if: inputs.cd != 'codefresh'
       shell: bash
+      run: |
+        echo "Error: The only currently supported value for `cd` is `codefresh`." >&2
+        exit 1

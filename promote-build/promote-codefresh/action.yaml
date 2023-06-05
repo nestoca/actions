@@ -1,0 +1,52 @@
+name: promote-codefresh
+description: >-
+  Used internally by `promote-build` action for `codefresh` CD.
+
+inputs:
+  version:
+    description: Version of build to promote.
+    required: true
+  releases:
+    description: Space-delimited list of releases to promote.
+    required: true
+  env:
+    description: Target environment to promote to.
+    required: true
+  token:
+    description: GitHub token to use to check out infra repo.
+    required: true
+      
+runs:
+  using: composite
+  steps:
+    - name: Check out infra repo
+      uses: actions/checkout@v3
+      with:
+        repository: nestoca/infra
+        ref: master
+        path: infra
+        token: ${{ inputs.token }}
+        fetch-depth: 0
+    - uses: docker://northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/promote-codefresh:0.1.0
+      with:
+        workdir: infra/${{ inputs.env }}
+        mounts:
+          - source: ${{ github.workspace }}/infra
+            target: /infra
+        env:
+          RELEASES: ${{ inputs.releases }}
+          RELEASE_TEMPLATE: /infra/templates/promote-service/release.yaml.gotmpl
+          VALUES_TEMPLATE: /infra/templates/promote-service/values.yaml.gotmpl
+    - name: Push changes
+      shell: bash
+      run: |-
+        cd infra
+        if git diff --quiet; then
+          echo "No changes found."
+        else
+          echo "Pushing changes..."
+          git pull
+          git add .
+          git commit -m 'Promote release(s) "${{ inputs.releases }}" to version ${{ inputs.version }} in ${{ inputs.env }}'
+          git push origin master
+        fi
