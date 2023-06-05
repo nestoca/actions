@@ -1,4 +1,4 @@
-name: Build docker image for get-build-info action
+name: Build get-build-info image
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ concurrency:
   group: get-build-info
 jobs:
   build:
-    name: Build docker image
+    name: Build get-build-info image
     runs-on: ubuntu-latest
     permissions:
       contents: "read"
