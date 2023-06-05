@@ -27,15 +27,16 @@ runs:
         path: infra
         token: ${{ inputs.token }}
         fetch-depth: 0
-    - uses: docker://northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/promote-codefresh:0.1.0
-      with:
-        workdir: infra/${{ inputs.env }}
-        volumes:
-          - ${{ github.workspace }}/infra:/infra
-        env:
-          RELEASES: ${{ inputs.releases }}
-          RELEASE_TEMPLATE: /infra/templates/promote-service/release.yaml.gotmpl
-          VALUES_TEMPLATE: /infra/templates/promote-service/values.yaml.gotmpl
+    - name: Promote
+      shell: bash
+      run: |-
+        docker run --rm \
+          --workdir infra/${{ inputs.env }} \
+          --env RELEASES="${{ inputs.releases }}" \
+          --env RELEASE_TEMPLATE="/infra/templates/promote-service/release.yaml.gotmpl" \
+          --env VALUES_TEMPLATE="/infra/templates/promote-service/values.yaml.gotmpl" \
+          --volume "${{ github.workspace }}/infra:/infra" \
+          northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/promote-codefresh:0.1.0
     - name: Push changes
       shell: bash
       run: |-
