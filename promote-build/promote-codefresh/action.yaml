@@ -27,6 +27,18 @@ runs:
         path: infra
         token: ${{ inputs.token }}
         fetch-depth: 0
+    - name: Check env dir contents
+      shell: bash
+      run: |-
+        cd ${{ github.workspace }}/infra
+        pwd
+        echo 
+        ls -la
+        echo ----
+        cd ${{ inputs.env }}
+        pwd
+        echo 
+        ls -la
     - name: Promote
       shell: bash
       run: |-
