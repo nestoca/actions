@@ -36,6 +36,8 @@ runs:
           --env DOCKER_TAG="${{ inputs.version }}" \
           --env RELEASE_TEMPLATE="/infra/templates/promote-service/release.yaml.gotmpl" \
           --env VALUES_TEMPLATE="/infra/templates/promote-service/values.yaml.gotmpl" \
+          --env GENERIC_CHART_VERSION="0.46.0" \
+          --env REGISTRY="DUMMY_REGISTRY" \
           --volume "${{ github.workspace }}/infra:/infra" \
           northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/promote-codefresh:0.1.0
     - name: Push changes
