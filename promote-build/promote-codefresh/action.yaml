@@ -33,6 +33,7 @@ runs:
         docker run --rm \
           --workdir /infra/${{ inputs.env }} \
           --env RELEASES="${{ inputs.releases }}" \
+          --env DOCKER_TAG="${{ inputs.version }}" \
           --env RELEASE_TEMPLATE="/infra/templates/promote-service/release.yaml.gotmpl" \
           --env VALUES_TEMPLATE="/infra/templates/promote-service/values.yaml.gotmpl" \
           --volume "${{ github.workspace }}/infra:/infra" \
