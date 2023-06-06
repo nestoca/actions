@@ -4,23 +4,28 @@ description: >-
   Typically called at end of build workflow to auto-promote new build to some environment.
 
 inputs:
+
   version:
     description: Version of build to promote.
     required: true
+
   releases:
-    description: Space-delimited list of releases to promote.
+    description: Space-delimited list of releases to promote (in most cases, will be just the project name).
     required: true
+
   env:
     description: Target environment to promote to (defaults to `qa`).
     required: false
     default: qa
-  cd:
+
+  via:
     description: >-
-      Optional CD mode to use, either "legacy" (using `*-infrastucture` repos and Cloud Build),
-      "codefresh" (using `infra` monorepo, Codefresh and helmfile, the default), or
-      "joy" (using `catalog` repo, Joy and ArgoCD).
+      Optional promotion path to use, either "legacy" (using `*-infrastucture` repos and Cloud Build), "codefresh"
+      (using `infra` monorepo, Codefresh and helmfile, the default), or "joy" (using `catalog` repo, Joy and ArgoCD).
+      Only "codefresh" is supported for now.
     required: false
     default: codefresh
+
   token:
     description: GitHub token to use to check out infra repo.
     required: true
@@ -28,15 +33,17 @@ inputs:
 runs:
   using: composite
   steps:
-    - if: inputs.cd == 'codefresh'
+
+    - if: inputs.via == 'codefresh'
       uses: nestoca/actions/promote-build/promote-codefresh@master
       with:
         version: ${{ inputs.version }}
         releases: ${{ inputs.releases }}
         env: ${{ inputs.env }}
         token: ${{ inputs.token }}
-    - if: inputs.cd != 'codefresh'
+
+    - if: inputs.via != 'codefresh'
       shell: bash
       run: |
-        echo "Error: The only currently supported value for `cd` is `codefresh`." >&2
+        echo "Error: The only currently supported value for `via` is `codefresh`." >&2
         exit 1

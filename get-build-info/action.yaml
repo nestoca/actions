@@ -2,18 +2,23 @@ name: get-build-info
 description: Determines all the metadata for a given build, such as current version, next version, git tag...
 
 inputs:
-  working-directory:
+
+  work-dir:
     description: >-
       Optional working directory within which to execute this action, defaulting to
-      `GITHUB_WORKSPACE` env var.
+      `GITHUB_WORKSPACE` env var. Allows name of project within a monorepo to have its
+      name determined based on `PROJECT` var from its `jen.yaml`. No need to specify this
+      if you specify `project` explicitly.
     required: false
     default: ${{ github.workspace }}
+
   project:
     description: >-
       Optional project name override, defaulting to PROJECT var in jen.yaml if present,
       otherwise uses current working directory name.
     required: false
     default: ""
+
   git-tag-prefix:
     description: >-
       Optional prefix for git tags used to version project. In a typical project, that
@@ -23,16 +28,20 @@ inputs:
     default: v
 
 outputs:
+
   project:
     description: >-
       Name of project being built.
+
   version:
     description: >-
       Version being built in semver format (eg: "0.0.1" for master or
       "0.1350.0-feat-mo-123-some-feature-6e9580872-2023-05-09_20_17_42" for PRs).
+
   git-tag:
     description: >-
       Git tag to mark current build in git (eg: "v0.0.1" or "path/to/my-project/v0.0.1").
+
   docker-tag:
     description: >-
       Tag for docker image being built (eg: "0.0.1" for master or
@@ -42,6 +51,6 @@ runs:
   using: docker
   image: docker://northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/get-build-info:0.14.0
   env:
-    WORK_DIR: ${{ inputs.working-directory }}
+    WORK_DIR: ${{ inputs.work-dir }}
     GIT_TAG_PREFIX: ${{ inputs.git-tag-prefix }}
     PROJECT: ${{ inputs.project }}

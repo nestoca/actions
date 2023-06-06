@@ -1,32 +1,37 @@
-name: Build get-build-info image
+name: Build image used in promote-codefresh action
+
 on:
   push:
     branches:
       - master
     paths:
-      - "get-build-info/docker/**"
+      - "promote-build/promote-codefresh-docker/**"
+
 concurrency:
-  group: get-build-info
+  group: promote-codefresh
+
 jobs:
   build:
-    name: Build get-build-info image
+    name: Build promote-codefresh image
     runs-on: ubuntu-latest
     permissions:
       contents: "read"
       id-token: "write"
     steps:
+
       - name: Check out
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
+
       - name: Get build info
         id: info
         uses: nestoca/actions/get-build-info@v1
         with:
-          working-directory: get-build-info/docker
-          project: get-build-info
-          git-tag-prefix: get-build-info/docker/v
+          project: promote-codefresh
+          git-tag-prefix: promote-codefresh/v
+
       - name: Build image
         uses: nestoca/actions/build-image@v1
         with:
@@ -34,23 +39,26 @@ jobs:
           tags: ${{ steps.info.outputs.docker-tag }},latest
           key: ${{ secrets.GCP_KEY }}
           target: actions
-          context: get-build-info/docker
+          context: promote-build/promote-codefresh-docker
+
       - name: Tag commit
         uses: silphid/actions/tag-commit@v1
         with:
           tag: ${{ steps.info.outputs.git-tag }}
+
       - name: Set git identity
         run: |-
             git config --global user.email "nestobot@nesto.ca"
             git config --global user.name "nestobot"
+
       - name: Promote image in action
         id: promote
         uses: silphid/actions/replace-in-repo@v1
         with:
-          message: |-
-            Promote image in get-build-info action to ${{ steps.info.outputs.docker-tag }}
-          glob: get-build-info/action.yaml
+          glob: promote-build/promote-codefresh/action.yaml
           search: |-
-            (?<=^\s*image: docker://.+/actions/get-build-info:).+$
+            (?<=^\s*image: docker://.+/actions/promote-codefresh:).+$
           replace: |-
             ${{ steps.info.outputs.docker-tag }}
+          message: |-
+            Promote image in promote-build action to ${{ steps.info.outputs.docker-tag }}

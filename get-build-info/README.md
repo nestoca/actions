@@ -1,9 +1,10 @@
 # get-build-info
 
-That action allows to determine all the metadata for current build and would typically be invoked at beginning of build workflow, within git clone directory and in specific branch being built.
+Determines all metadata for current build and would typically be invoked at beginning of build workflow, within git clone directory and in specific branch being built.
 
 # Inputs
 
+- `work-dir`: Optional working directory within which to execute this action, defaulting to `GITHUB_WORKSPACE` env var. Allows name of project within a monorepo to have its name determined based on `PROJECT` var from its `jen.yaml`. No need to specify this if you specify `project` explicitly.
 - `project`: Optional project name override.
 - `git-tag-prefix`: Optional prefix for git tags used to version project. In a typical project, that would be simply "v" (the default), eg: "v0.0.1". In a monorepo, that should include the path to sub-project, eg: "path/to/my-project/v".
 
@@ -26,19 +27,22 @@ That action allows to determine all the metadata for current build and would typ
 ```yaml
 jobs:
   job:
-    name: Build my-project
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - id: info
-        uses: nestoca/actions/get-build-info@master
-        with:
-          project: my-project
-          git-tag-prefix: v
-      - run: |
+      - name: Check out
+        uses: actions/checkout@v3
+
+      - name: Get build info
+        id: info
+        uses: nestoca/actions/get-build-info@v1
+
+      - name: Build something with that info
+        run: |-
           echo Project: ${{ steps.info.outputs.project }}
           echo Version: ${{ steps.info.outputs.version }}
+          echo Version: ${{ steps.info.outputs.releases }}
           echo Git-Tag: ${{ steps.info.outputs.git-tag }}
           echo Docker-Tag: ${{ steps.info.outputs.docker-tag }}
 ```
