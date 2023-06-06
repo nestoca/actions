@@ -67,5 +67,5 @@ runs:
 
         # Clean-up
         cp Chart.yaml{_,}
-        rm Chart.yaml.bak
+        rm Chart.yaml_
         rm $TAR
