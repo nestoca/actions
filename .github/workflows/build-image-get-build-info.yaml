@@ -30,7 +30,7 @@ jobs:
         uses: nestoca/actions/get-build-info@v1
         with:
           project: get-build-info
-          git-tag-prefix: get-build-info/docker/v
+          git-tag-prefix: get-build-info/v
 
       - name: Build image
         uses: nestoca/actions/build-image@v1
