@@ -31,7 +31,7 @@ runs:
     - id: "auth"
       uses: "google-github-actions/auth@v1"
       with:
-        credentials_json: "${{ secrets.GCP_KEY }}"
+        credentials_json: "${{ inputs.key }}"
 
     - name: Set up Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v1.1.1
