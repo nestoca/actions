@@ -57,8 +57,8 @@ runs:
           --password-stdin https://${{ inputs.registry }} 1>&2
 
         # Patch Chart.yaml
-        sed -i bak "s/name\: .+/name\: ${{ inputs.name }}/" Chart.yaml
-        sed -i bak "s/version\: 9\.9\.9/version\: ${{ inputs.version }}/" Chart.yaml
+        sed -i_ "s/name\: .+/name\: ${{ inputs.name }}/" Chart.yaml
+        sed -i_ "s/version\: 9\.9\.9/version\: ${{ inputs.version }}/" Chart.yaml
 
         # Build and push
         TAR=${{ inputs.name }}-${{ inputs.version }}.tgz
@@ -66,6 +66,6 @@ runs:
         HELM_EXPERIMENTAL_OCI=1 helm push $TAR oci://${{ inputs.registry }}/nesto-ci-78a3f2e6/charts
 
         # Clean-up
-        cp Chart.yaml{.bak,}
+        cp Chart.yaml{_,}
         rm Chart.yaml.bak
         rm $TAR
