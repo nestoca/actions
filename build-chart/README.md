@@ -31,10 +31,11 @@ jobs:
         id: info
         uses: nestoca/actions/get-build-info@v1
 
-      - name: Build image
-        uses: nestoca/actions/build-image@v1
+      - name: Build chart
+        uses: nestoca/actions/build-chart@v1
         with:
           name: ${{ steps.info.outputs.project }}
-          tags: ${{ steps.info.outputs.docker-tag }},latest
+          version: ${{ steps.info.outputs.version }}
           key: ${{ secrets.GCP_KEY }}
+          work-dir: charts/generic
 ```
