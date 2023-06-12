@@ -67,9 +67,6 @@ runs:
           echo "image_name=nesto-ci-78a3f2e6/${{ inputs.name }}" >> $GITHUB_ENV
         elif [[ ${{ inputs.repository }} != "" ]]; then
           echo "image_name=nesto-ci-78a3f2e6/${{ inputs.repository }}/${{ inputs.name }}" >> $GITHUB_ENV
-        else
-          echo "Invalid target specified."
-          exit 1
         fi
     
     - name: Generate image tags
