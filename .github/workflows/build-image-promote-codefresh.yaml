@@ -37,9 +37,10 @@ jobs:
         with:
           name: ${{ steps.info.outputs.project }}
           tags: ${{ steps.info.outputs.docker-tag }},latest
-          key: ${{ secrets.GCP_KEY }}
-          target: actions
+          key: ${{ secrets.GCP_DOCKER_PUBLIC_SA_KEY }}
+          repository: actions
           context: promote-build/promote-codefresh-docker
+          push: "true"
 
       - name: Tag commit
         uses: silphid/actions/tag-commit@v1
