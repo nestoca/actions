@@ -1,0 +1,71 @@
+name: Checkout
+description: Checks out a git repo
+
+inputs:
+
+  repository:
+    description: >
+      Optional repository name with owner (eg: nestoca/repo).
+    default: ${{ github.repository }}
+
+  ref:
+    description: >
+      Optional branch, tag or SHA to checkout. When checking out the repository that
+      triggered a workflow, this defaults to the reference or SHA for that
+      event. Otherwise, uses the default branch.
+    default: ""
+
+  token:
+    description: >
+      Personal access token (PAT) used to fetch the repository. The PAT is configured
+      with the local git config, which enables your scripts to run authenticated git
+      commands. The post-job step removes the PAT.
+
+      We recommend using a service account with the least permissions necessary.
+      Also when generating a new PAT, select the least scopes necessary.
+    default: ${{ github.token }}
+
+  path:
+    description: >
+      Relative path under $GITHUB_WORKSPACE to place the repository.
+      Default: ''
+    default: ""
+
+  clean:
+    description: >
+      Whether to execute `git clean -ffdx && git reset --hard HEAD` before fetching.
+      Default: true
+    default: 'true'
+
+  fetch-depth:
+    description: >
+      Number of commits to fetch. 0 indicates all history for all branches and tags.
+      Default: 1
+    default: '1'
+
+  set-git-identity:
+    description: >
+      Optionally, whether to configure git user name and email ('true') or not ('false').
+      That is required in order to perform further git operations, such as committing and pushing changes.
+      Default: true
+    default: 'true'
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ inputs.repository }}
+        ref: ${{ inputs.ref }}
+        token: ${{ inputs.token }}
+        path: ${{ inputs.path }}
+        clean: ${{ inputs.clean }}
+        fetch-depth: ${{ inputs.fetch-depth }}
+
+    - name: Set git identity
+      shell: bash
+      if: inputs.set-git-identity == 'true'
+      run: |-
+        git config user.name github-actions
+        git config user.email github-actions@github.com
