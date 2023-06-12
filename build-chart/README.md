@@ -36,6 +36,6 @@ jobs:
         with:
           name: ${{ steps.info.outputs.project }}
           version: ${{ steps.info.outputs.version }}
-          key: ${{ secrets.GCP_KEY }}
+          key: ${{ secrets.GCP_DOCKER_SA_KEY }}
           work-dir: charts/generic
 ```
