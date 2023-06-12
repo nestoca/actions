@@ -63,9 +63,9 @@ runs:
       id: generate-name
       shell: bash
       run: |
-        if [ "${{ inputs.repository }}" == "" ]; then
+        if [[ ${{ inputs.repository }} == "" ]]; then
           echo "image_name=nesto-ci-78a3f2e6/${{ inputs.name }}" >> $GITHUB_ENV
-        elif [ "${{ inputs.repository }}" != "" ]; then
+        elif [[ ${{ inputs.repository }} != "" ]]; then
           echo "image_name=nesto-ci-78a3f2e6/${{ inputs.repository }}/${{ inputs.name }}" >> $GITHUB_ENV
         else
           echo "Invalid target specified."
@@ -88,10 +88,10 @@ runs:
       uses: docker/metadata-action@v4
       with:
         # list of Docker images to use as base name for tags
-        images: |
+        images: |-
           ${{ steps.generate-name.outputs.image_name }}
         # generate Docker tags based on the following events/attributes
-        tags: | 
+        tags: |- 
           ${{ steps.generate-tags.outputs.tags }}
 
     - name: Build and push
