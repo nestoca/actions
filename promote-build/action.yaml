@@ -1,5 +1,5 @@
 name: promote-build
-description: >-
+description: >
   Promotes build version in given releases of target environment using a certain CD mode.
   Typically called at end of build workflow to auto-promote new build to some environment.
 
@@ -19,7 +19,7 @@ inputs:
     default: qa
 
   via:
-    description: >-
+    description: >
       Optional promotion path to use, either "legacy" (using `*-infrastucture` repos and Cloud Build), "codefresh"
       (using `infra` monorepo, Codefresh and helmfile, the default), or "joy" (using `catalog` repo, Joy and ArgoCD).
       Only "codefresh" is supported for now.
