@@ -1,5 +1,5 @@
 name: promote-codefresh
-description: >-
+description: >
   Used internally by `promote-build` action for `codefresh` CD.
 
 inputs:

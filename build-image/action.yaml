@@ -28,6 +28,7 @@ inputs:
   repository:
     description: >-
       (Optional) The Google Artifact Registry repo to push the image to. If unset, image will be pushed to Google Container Registry. 
+
     required: false
     default: ""
 
