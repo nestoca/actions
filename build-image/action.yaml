@@ -96,6 +96,6 @@ runs:
       uses: docker/build-push-action@v4
       with:
         context: ${{ inputs.context }}
-        push: ${{ inputs.push == "true" }}
+        push: ${{ inputs.push }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
