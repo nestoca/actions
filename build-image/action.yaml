@@ -49,7 +49,7 @@ runs:
       uses: docker/login-action@v2
       with:
         registry: northamerica-northeast1-docker.pkg.dev
-        username: _json_key_base64
+        username: _json_key
         password: ${{ inputs.key }}
 
     - if: inputs.repository == ''
@@ -57,17 +57,17 @@ runs:
       uses: docker/login-action@v2
       with:
         registry: gcr.io
-        username: _json_key_base64
+        username: _json_key
         password: ${{ inputs.key }}
     
     - name: Generate image Name
       id: generate-name
       shell: bash
       run: |
-        if [[ ${{ inputs.repository }} == "" ]]; then
-          echo "image_name=nesto-ci-78a3f2e6/${{ inputs.name }}" >> $GITHUB_ENV
-        elif [[ ${{ inputs.repository }} != "" ]]; then
-          echo "image_name=nesto-ci-78a3f2e6/${{ inputs.repository }}/${{ inputs.name }}" >> $GITHUB_ENV
+        if [[ "${{ inputs.repository }}" == "" ]]; then
+          echo "image_name=nesto-ci-78a3f2e6/${{ inputs.name }}" >> $GITHUB_OUTPUT
+        elif [[ "${{ inputs.repository }}" != "" ]]; then
+          echo "image_name=nesto-ci-78a3f2e6/${{ inputs.repository }}/${{ inputs.name }}" >> $GITHUB_OUTPUT
         fi
     
     - name: Generate image tags
