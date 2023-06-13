@@ -39,5 +39,5 @@ jobs:
           releases: ${{ steps.info.outputs.releases }}
           env: qa
           via: codefresh
-          token: $${{ secrets.GH_TOKEN }}
+          token: $${{ secrets.GH_RELEASE_TOKEN }}
 ```

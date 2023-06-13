@@ -44,7 +44,7 @@ runs:
       shell: bash
       run: |-
         cd infra
-        git config --global user.email "nestobot@nesto.ca"
+        git config --global user.email "githu@nesto.ca"
         git config --global user.name "nestobot"
         if git diff --quiet; then
           echo "No changes found."

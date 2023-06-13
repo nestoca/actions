@@ -22,7 +22,6 @@ jobs:
       - name: Check out
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
 
       - name: Get build info
@@ -49,7 +48,7 @@ jobs:
 
       - name: Set git identity
         run: |-
-            git config --global user.email "nestobot@nesto.ca"
+            git config --global user.email "github@nesto.ca"
             git config --global user.name "nestobot"
 
       - name: Promote image in action
