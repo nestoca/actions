@@ -10,8 +10,12 @@ inputs:
     required: true
 
   releases:
-    description: Space-delimited list of releases to promote (in most cases, will be just the project name).
-    required: true
+    description: (Required when promoting via 'codefresh') Space-delimited list of releases to promote (in most cases, will be just the project name).
+    required: false
+
+  project:
+    description: (Required when promoting via 'joy'); Project whose releases should be promoted.
+    required: false
 
   env:
     description: Target environment to promote to (defaults to `qa`).
@@ -20,9 +24,12 @@ inputs:
 
   via:
     description: >
-      Optional promotion path to use, either "legacy" (using `*-infrastucture` repos and Cloud Build), "codefresh"
-      (using `infra` monorepo, Codefresh and helmfile, the default), or "joy" (using `catalog` repo, Joy and ArgoCD).
-      Only "codefresh" is supported for now.
+      Optional promotion path to use, 
+      
+      - `legacy` -- [Not implemented] using `*-infrastucture` repos and Cloud Build 
+      - `codefresh` -- using `infra` monorepo, Codefresh and helmfile, the default)
+      - `joy` -- using `catalog` monorepo and deployed with ArgoCD
+      
     required: false
     default: codefresh
 
@@ -42,8 +49,16 @@ runs:
         env: ${{ inputs.env }}
         token: ${{ inputs.token }}
 
-    - if: inputs.via != 'codefresh'
+    - if: inputs.via == 'joy'
+      uses: nestoca/actions/promote-build/promote-joy@devops-1714/deploy-with-joy
+      with:
+        version: ${{ inputs.version }}
+        project: ${{ inputs.project }}
+        env: ${{ inputs.env }}
+        token: ${{ inputs.token }}
+
+    - if: inputs.via != 'codefresh' || inputs.via != 'joy'
       shell: bash
       run: |
-        echo "Error: The only currently supported value for `via` is `codefresh`."
+        echo "Error: The only currently supported value for `via` is either `codefresh` or `joy`."
         exit 1

@@ -1,0 +1,58 @@
+name: promote-codefresh
+description: >
+  Used internally by `promote-build` action for `codefresh` CD.
+
+inputs:
+  version:
+    description: Version of build to promote.
+    required: true
+  project:
+    description: The project whose release(s) should be promoted
+    required: true
+  env:
+    description: Target environment to promote to.
+    required: true
+  token:
+    description: GitHub token to use to check out infra repo.
+    required: true
+      
+runs:
+  using: composite
+  steps:
+    - name: Install joy-cli
+      shell: bash
+      run: |-
+        export JOY_VERSION=0.3.0
+        wget https://github.com/nestoca/joy-cli/releases/download/v$JOY_VERSION/joy_$JOY_VERSION_linux_amd64.tar.gz
+        tar -xvzf joy_$JOY_VERSION_linux_amd64.tar.gz joy
+        rm -rf joy_$JOY_VERSION_linux_amd64.tar.gz
+        chmod +x joy
+    - name: Check out infra repo
+      uses: actions/checkout@v3
+      with:
+        repository: nestoca/catalog
+        ref: master
+        path: catalog
+        token: ${{ inputs.token }}
+        fetch-depth: 0
+    - name: Promote
+      shell: bash
+      env:
+        JOY_CATALOG_DIR: ${{ github.workspace }}/catalog
+      run: |-
+        joy build promote --env ${{ inputs.env }} ${{ inputs.project }} ${{ inputs.version }}
+    - name: Push changes
+      shell: bash
+      run: |-
+        cd infra
+        git config --global user.email "github@nesto.ca"
+        git config --global user.name "nestobot"
+        if git diff --quiet; then
+          echo "No changes found."
+        else
+          echo "Pushing changes..."
+          git pull
+          git add .
+          git commit -m 'Promote project "${{ inputs.project }}" to version ${{ inputs.version }} in ${{ inputs.env }}'
+          git push origin master
+        fi
