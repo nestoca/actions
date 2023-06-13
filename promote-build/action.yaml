@@ -50,14 +50,14 @@ runs:
         token: ${{ inputs.token }}
 
     - if: inputs.via == 'joy'
-      uses: nestoca/actions/promote-build/promote-joy@devops-1714/deploy-with-joy
+      uses: nestoca/actions/promote-build/promote-joy@v1
       with:
         version: ${{ inputs.version }}
         project: ${{ inputs.project }}
         env: ${{ inputs.env }}
         token: ${{ inputs.token }}
 
-    - if: inputs.via != 'codefresh' || inputs.via != 'joy'
+    - if: inputs.via != 'codefresh' && inputs.via != 'joy'
       shell: bash
       run: |
         echo "Error: The only currently supported value for `via` is either `codefresh` or `joy`."
