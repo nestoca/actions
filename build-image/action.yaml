@@ -65,9 +65,9 @@ runs:
       shell: bash
       run: |
         if [[ "${{ inputs.repository }}" == "" ]]; then
-          echo "image_name=nesto-ci-78a3f2e6/${{ inputs.name }}" >> $GITHUB_OUTPUT
+          echo "image_name=gcr.io/nesto-ci-78a3f2e6/${{ inputs.name }}" >> $GITHUB_OUTPUT
         elif [[ "${{ inputs.repository }}" != "" ]]; then
-          echo "image_name=nesto-ci-78a3f2e6/${{ inputs.repository }}/${{ inputs.name }}" >> $GITHUB_OUTPUT
+          echo "image_name=northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/${{ inputs.repository }}/${{ inputs.name }}" >> $GITHUB_OUTPUT
         fi
     
     - name: Generate image tags
