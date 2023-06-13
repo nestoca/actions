@@ -23,9 +23,9 @@ runs:
       shell: bash
       run: |-
         export JOY_VERSION=0.3.0
-        wget https://github.com/nestoca/joy-cli/releases/download/v$JOY_VERSION/joy_$JOY_VERSION_linux_amd64.tar.gz
-        tar -xvzf joy_$JOY_VERSION_linux_amd64.tar.gz joy
-        rm -rf joy_$JOY_VERSION_linux_amd64.tar.gz
+        wget https://github.com/nestoca/joy-cli/releases/download/v${JOY_VERSION}/joy_${JOY_VERSION}_linux_amd64.tar.gz
+        tar -xvzf joy_${JOY_VERSION}_linux_amd64.tar.gz joy
+        rm -rf joy_${JOY_VERSION}_linux_amd64.tar.gz
         chmod +x joy
     - name: Check out infra repo
       uses: actions/checkout@v3
@@ -40,11 +40,11 @@ runs:
       env:
         JOY_CATALOG_DIR: ${{ github.workspace }}/catalog
       run: |-
-        joy build promote --env ${{ inputs.env }} ${{ inputs.project }} ${{ inputs.version }}
+        ./joy build promote --env ${{ inputs.env }} ${{ inputs.project }} ${{ inputs.version }}
     - name: Push changes
       shell: bash
       run: |-
-        cd infra
+        cd catalog
         git config --global user.email "github@nesto.ca"
         git config --global user.name "nestobot"
         if git diff --quiet; then
