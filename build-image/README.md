@@ -39,6 +39,7 @@ jobs:
       - name: Build image
         uses: nestoca/actions/build-image@v1
         with:
+          push: "false" # default
           name: ${{ steps.info.outputs.project }}
           tags: ${{ steps.info.outputs.docker-tag }},latest
           key: ${{ secrets.GCP_DOCKER_SA_KEY }}

@@ -17,6 +17,7 @@ No outputs.
 
 # Example
 
+## via Codefresh
 ```yaml
 jobs:
   job:
@@ -35,9 +36,35 @@ jobs:
 
       - name: Promote build to qa environment via Codefresh CD
         with:
+          via: codefresh
+          env: qa
           version: ${{ steps.info.outputs.version }}
           releases: ${{ steps.info.outputs.releases }}
+          token: $${{ secrets.GH_RELEASE_TOKEN }}
+```
+
+## via Joy
+```yaml
+jobs:
+  job:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+
+      - name: Get build info
+        id: info
+        uses: nestoca/actions/get-build-info@v1
+
+      # Build something here...
+
+      - name: Promote build to qa environment via Codefresh CD
+        with:
+          via: joy
           env: qa
-          via: codefresh
+          version: ${{ steps.info.outputs.version }}
+          project: ${{ steps.info.outputs.project }}
           token: $${{ secrets.GH_RELEASE_TOKEN }}
 ```
