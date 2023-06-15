@@ -3,15 +3,19 @@ description: >
   Used internally by `promote-build` action for `codefresh` CD.
 
 inputs:
+
   version:
     description: Version of build to promote.
     required: true
+
   releases:
     description: Space-delimited list of releases to promote.
     required: true
+
   env:
     description: Target environment to promote to.
     required: true
+
   token:
     description: GitHub token to use to check out infra repo.
     required: true
@@ -19,6 +23,7 @@ inputs:
 runs:
   using: composite
   steps:
+
     - name: Check out infra repo
       uses: actions/checkout@v3
       with:
@@ -27,6 +32,7 @@ runs:
         path: infra
         token: ${{ inputs.token }}
         fetch-depth: 0
+
     - name: Promote
       shell: bash
       run: |-
@@ -40,6 +46,7 @@ runs:
           --env REGISTRY="DUMMY_REGISTRY" \
           --volume "${{ github.workspace }}/infra:/infra" \
           northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/promote-codefresh:0.1.0
+
     - name: Push changes
       shell: bash
       run: |-
