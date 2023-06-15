@@ -45,6 +45,11 @@ runs:
         project_id: nesto-ci-78a3f2e6
         install_components: docker-credential-gcr
 
+    - name: Test chart using testchart  
+      uses: silphid/actions/test-chart@v1
+      with:
+        work-dir: ${{ inputs.work-dir }}
+        
     - name: Install helm
       shell: bash
       run: |-
