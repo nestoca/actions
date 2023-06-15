@@ -42,7 +42,7 @@ jobs:
         run: |-
           echo Project: ${{ steps.info.outputs.project }}
           echo Version: ${{ steps.info.outputs.version }}
-          echo Version: ${{ steps.info.outputs.releases }}
-          echo Git-Tag: ${{ steps.info.outputs.git-tag }}
-          echo Docker-Tag: ${{ steps.info.outputs.docker-tag }}
+          echo Releases: ${{ steps.info.outputs.releases }}
+          echo Git tag: ${{ steps.info.outputs.git-tag }}
+          echo Docker tag: ${{ steps.info.outputs.docker-tag }}
 ```
