@@ -22,7 +22,7 @@ runs:
     - name: Install joy-cli
       shell: bash
       run: |-
-        export JOY_VERSION=0.3.0
+        export JOY_VERSION=0.4.0
         wget https://github.com/nestoca/joy-cli/releases/download/v${JOY_VERSION}/joy_${JOY_VERSION}_linux_amd64.tar.gz
         tar -xvzf joy_${JOY_VERSION}_linux_amd64.tar.gz joy
         rm -rf joy_${JOY_VERSION}_linux_amd64.tar.gz
