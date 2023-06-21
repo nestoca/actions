@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/go-test/deep"
-	"github.com/nestoca/metadata/src/internal/testutil"
+	"github.com/nestoca/get-build-info/src/internal/testutil"
 	"github.com/stretchr/testify/assert"
 )
 

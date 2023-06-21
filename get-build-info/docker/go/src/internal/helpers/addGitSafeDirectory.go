@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/nestoca/metadata/src/internal/logging"
-	"github.com/nestoca/metadata/src/internal/shell"
+	"github.com/nestoca/get-build-info/src/internal/logging"
+	"github.com/nestoca/get-build-info/src/internal/shell"
 )
 
 // ConfigureGithubWorkspaceAsSafeDirectory marks directory specified by GITHUB_WORKSPACE

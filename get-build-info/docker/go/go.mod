@@ -1,4 +1,4 @@
-module github.com/nestoca/metadata
+module github.com/nestoca/get-build-info
 
 go 1.16
 

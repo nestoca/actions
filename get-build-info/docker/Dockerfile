@@ -5,11 +5,11 @@ COPY go/go.mod .
 COPY go/go.sum .
 RUN go mod download
 COPY go/ .
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o metadata ./src
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o get-build-info ./src
 
 # *******************************************************
 
 FROM alpine/git:2.36.3
 
-COPY --from=build /app/metadata /metadata
-ENTRYPOINT ["sh", "-c", "cd ${WORK_DIR:-.}; /metadata meta export"]
+COPY --from=build /app/get-build-info /get-build-info
+ENTRYPOINT ["sh", "-c", "cd ${WORK_DIR:-.}; /get-build-info"]

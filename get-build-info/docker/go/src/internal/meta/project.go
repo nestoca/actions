@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/nestoca/metadata/src/internal/logging"
-	"github.com/nestoca/metadata/src/internal/meta/jen"
+	"github.com/nestoca/get-build-info/src/internal/logging"
+	"github.com/nestoca/get-build-info/src/internal/meta/jen"
 )
 
 func GetProjectName() (string, error) {

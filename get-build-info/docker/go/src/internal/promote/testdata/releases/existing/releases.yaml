@@ -1,5 +1,0 @@
-foo:
-  chart: generic    
-  installed: true
-  tag: 0.2.3
-  version: 0.5.4

@@ -2,18 +2,10 @@ package main
 
 import (
 	"context"
+	"github.com/nestoca/get-build-info/src/internal/meta"
+	"github.com/spf13/cobra"
 	"os"
 	"os/signal"
-
-	"github.com/nestoca/metadata/src/cmd"
-	"github.com/nestoca/metadata/src/cmd/meta"
-	"github.com/nestoca/metadata/src/cmd/meta/export"
-	"github.com/nestoca/metadata/src/cmd/meta/project"
-	"github.com/nestoca/metadata/src/cmd/meta/releases"
-	"github.com/nestoca/metadata/src/cmd/meta/version"
-	"github.com/nestoca/metadata/src/cmd/meta/version/current"
-	"github.com/nestoca/metadata/src/cmd/meta/version/next"
-	"github.com/nestoca/metadata/src/cmd/promote"
 )
 
 func main() {
@@ -25,21 +17,15 @@ func main() {
 		stop()
 	}()
 
-	rootCmd := cmd.NewRoot()
-
-	metaCmd := meta.New()
-	rootCmd.AddCommand(metaCmd)
-	metaCmd.AddCommand(project.New())
-	metaCmd.AddCommand(releases.New())
-	metaCmd.AddCommand(export.New())
-
-	versionCmd := version.New()
-	versionCmd.AddCommand(current.New())
-	versionCmd.AddCommand(next.New())
-	metaCmd.AddCommand(versionCmd)
-
-	promoteCmd := promote.New()
-	rootCmd.AddCommand(promoteCmd)
+	rootCmd := &cobra.Command{
+		Use:   "get-build-info",
+		Short: "Determines and exports all build info to GitHub outputs",
+		Long:  "Determines and exports all build info to GitHub outputs",
+		Args:  cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return meta.Export()
+		},
+	}
 
 	if err := rootCmd.ExecuteContext(ctx); err != nil {
 		os.Exit(-1)

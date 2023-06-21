@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/coreos/go-semver/semver"
-	"github.com/nestoca/metadata/src/internal/logging"
-	"github.com/nestoca/metadata/src/internal/shell"
+	"github.com/nestoca/get-build-info/src/internal/logging"
+	"github.com/nestoca/get-build-info/src/internal/shell"
 )
 
 var zeroVersion = semver.New("0.0.0")

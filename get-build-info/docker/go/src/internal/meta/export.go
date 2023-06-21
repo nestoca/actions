@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nestoca/metadata/src/internal/helpers"
-	"github.com/nestoca/metadata/src/internal/logging"
+	"github.com/nestoca/get-build-info/src/internal/helpers"
+	"github.com/nestoca/get-build-info/src/internal/logging"
 )
 
 // Exports all metadata variables to GitHub Actions outputs.
