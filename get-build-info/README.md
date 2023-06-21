@@ -17,6 +17,7 @@ Determines all metadata for current build and would typically be invoked at begi
   - Current working directory name.
 - `version`: Version being built in semver format (eg: "0.0.1" for master or
   "0.1350.0-feat-mo-123-some-feature-6e9580872-2023-05-09_20_17_42" for PRs).
+- `releases`: List of releases to promote (defaults to project name), space delimited.
 - `git-tag`: Git tag to mark current build in git (eg: "v0.0.1" or
   "path/to/my-project/v0.0.1").
 - `docker-tag`: Tag for docker image being built (eg: "0.0.1" for master or
