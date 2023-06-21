@@ -44,7 +44,7 @@ func NewRoot() *cobra.Command {
 
 // validate validates the runtime args
 func validate() error {
-	for _, envKey := range []string{"RELEASES", "DOCKER_TAG", "REGISTRY", "GENERIC_CHART_VERSION", "RELEASE_TEMPLATE", "VALUES_TEMPLATE"} {
+	for _, envKey := range []string{"RELEASES", "DOCKER_TAG", "RELEASE_TEMPLATE", "VALUES_TEMPLATE"} {
 		if _, present := os.LookupEnv(envKey); !present {
 			return fmt.Errorf("missing required env var %s", envKey)
 		}
