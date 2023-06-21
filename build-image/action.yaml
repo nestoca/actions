@@ -36,6 +36,15 @@ inputs:
     description: (Optional) Should the image be published?
     required: false
     default: "false"
+
+  secrets:
+    description: >-
+      (Optional) Secrets to pass to build. These will be available as environment variables
+      during the build. Format is a multi-line string, each line in the form `"key=value"`.
+      Quoting is only required if the value contains spaces.
+      See: https://docs.docker.com/build/ci/github-actions/secrets/
+    required: false
+    default: ""
       
 runs:
   using: composite
@@ -60,7 +69,7 @@ runs:
         username: _json_key
         password: ${{ inputs.key }}
     
-    - name: Generate image Name
+    - name: Generate image name
       id: generate-name
       shell: bash
       run: |
@@ -99,3 +108,4 @@ runs:
         push: ${{ inputs.push }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+        secrets: ${{ inputs.secrets }}
