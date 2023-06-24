@@ -1,9 +1,9 @@
-package internal
+package pkg
 
 import (
 	"bytes"
 	"fmt"
-	"github.com/nestoca/actions/publish-people/go/internal/values"
+	"github.com/nestoca/actions/publish-people/go/pkg/values"
 	"html/template"
 
 	"github.com/nestoca/jac/pkg/config"
