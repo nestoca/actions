@@ -25,5 +25,5 @@ runs:
     - name: Build and Run
       shell: bash
       run: |-
-        cd ${{ github.action_path }}/publish-people-go
-        go run . --catalog-dir ${{ inputs.catalog }} --template ${{ inputs.template }}
+        cd ${{ github.action_path }}/go
+        go run . --catalog ${{ inputs.catalog }} --template ${{ inputs.template }}

@@ -1,10 +1,10 @@
-package structure
+package values
 
 import (
 	"github.com/nestoca/jac/pkg/live"
 )
 
-type Tree struct {
+type Values struct {
 	Streams []*Stream
 }
 
@@ -24,7 +24,7 @@ type Member struct {
 	Roles  []*live.Group
 }
 
-func NewTree(catalog *live.Catalog) *Tree {
+func NewValues(catalog *live.Catalog) *Values {
 	var streams []*Stream
 	for _, group := range catalog.Root.Groups {
 		// Only consider streams
@@ -87,7 +87,7 @@ func NewTree(catalog *live.Catalog) *Tree {
 		}
 	}
 
-	return &Tree{
+	return &Values{
 		Streams: streams,
 	}
 }

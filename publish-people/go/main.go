@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/nestoca/people-renderer/cmd"
 	"os"
+
+	"github.com/nestoca/actions/publish-people/go/cmd"
 )
 
 func main() {

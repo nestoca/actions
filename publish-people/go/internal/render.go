@@ -3,10 +3,11 @@ package internal
 import (
 	"bytes"
 	"fmt"
+	"github.com/nestoca/actions/publish-people/go/internal/values"
+	"html/template"
+
 	"github.com/nestoca/jac/pkg/config"
 	"github.com/nestoca/jac/pkg/live"
-	"github.com/nestoca/people-renderer/internal/structure"
-	"html/template"
 )
 
 func Render(catalogDir string, templateFile string) error {
@@ -15,8 +16,8 @@ func Render(catalogDir string, templateFile string) error {
 		return fmt.Errorf("loading catalog: %w", err)
 	}
 
-	tree := structure.NewTree(catalog)
-	result, err := render(tree, templateFile)
+	vals := values.NewValues(catalog)
+	result, err := render(vals, templateFile)
 	if err != nil {
 		return fmt.Errorf("rendering tree: %w", err)
 	}
@@ -32,24 +33,17 @@ func loadCatalog(dir string) (*live.Catalog, error) {
 		return nil, fmt.Errorf("loading config: %w", err)
 	}
 
-	catalog, err := live.LoadCatalog(cfg.Dir, cfg.Glob)
-	if err != nil {
-		return nil, fmt.Errorf("loading catalog: %w", err)
-	}
-	fmt.Printf("catalog loaded from %s\n", dir)
-	fmt.Printf("catalog contains %d groups\n", len(catalog.All.Groups))
-	fmt.Printf("catalog contains %d people\n", len(catalog.All.People))
-	return catalog, nil
+	return live.LoadCatalog(cfg.Dir, cfg.Glob)
 }
 
-func render(tree *structure.Tree, templateFile string) (string, error) {
+func render(vals *values.Values, templateFile string) (string, error) {
 	tmpl, err := template.ParseFiles(templateFile)
 	if err != nil {
 		return "", fmt.Errorf("parsing template %q: %w", templateFile, err)
 	}
 
 	var result bytes.Buffer
-	err = tmpl.Execute(&result, tree)
+	err = tmpl.Execute(&result, vals)
 	if err != nil {
 		return "", fmt.Errorf("executing template: %w", err)
 	}

@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/nestoca/people-renderer/internal"
+	"github.com/nestoca/actions/publish-people/go/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -10,14 +10,14 @@ func NewRootCmd() *cobra.Command {
 	var templateFile string
 
 	rootCmd := &cobra.Command{
-		Use:   "renderer",
-		Short: "CLI tool for rendering team page in confluence from Jac people and group definitions in nestoca/people repo",
+		Use:   "publish-people",
+		Short: "CLI tool for publishing people pages in Confluence Cloud from Jac catalog",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return internal.Render(catalogDir, templateFile)
 		},
 	}
 
-	rootCmd.PersistentFlags().StringVar(&catalogDir, "catalog-dir", "", "Directory of Jac catalog")
+	rootCmd.PersistentFlags().StringVar(&catalogDir, "catalog", "", "Directory of Jac catalog")
 	rootCmd.PersistentFlags().StringVar(&templateFile, "template", "", "Template file to use for rendering")
 
 	return rootCmd

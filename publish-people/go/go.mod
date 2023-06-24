@@ -1,4 +1,4 @@
-module github.com/nestoca/people-renderer
+module github.com/nestoca/actions/publish-people/go
 
 go 1.20
 
