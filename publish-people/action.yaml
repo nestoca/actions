@@ -1,0 +1,29 @@
+name: publish-people
+description: |-
+  Publishes pages to Confluence Cloud describing our streams, teams, people and their roles,
+  based on `jac` resource files (see: https://github.com/nestoca/jac).
+
+inputs:
+
+  catalog:
+    description: Path to `jac` catalog
+    required: true
+
+  template:
+    description: Path to template file
+    required: true
+      
+runs:
+  using: composite
+  steps:
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: "1.20"
+
+    - name: Build and Run
+      shell: bash
+      run: |-
+        cd ${{ github.action_path }}/publish-people-go
+        go run . --catalog-dir ${{ inputs.catalog }} --template ${{ inputs.template }}
