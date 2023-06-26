@@ -3,6 +3,7 @@ package values
 import (
 	"github.com/nestoca/jac/pkg/live"
 	"html"
+	"regexp"
 	"sort"
 	"strings"
 )
@@ -44,6 +45,7 @@ func NewValues(catalog *live.Catalog) *Values {
 		// Format description
 		description, _ := streamGroup.GetValue("description")
 		description = convertBulletPointsToHTMLList(description)
+		description = convertLinks(description)
 
 		// Add stream
 		stream := &Stream{
@@ -169,4 +171,10 @@ func getChildLines(lines []string, indentLevel int) []string {
 		}
 	}
 	return childLines
+}
+
+var linkRegex = regexp.MustCompile(`\[(.*?)\]\((.*?)\)`)
+
+func convertLinks(input string) string {
+	return linkRegex.ReplaceAllString(input, `<a href="$2">$1</a>`)
 }

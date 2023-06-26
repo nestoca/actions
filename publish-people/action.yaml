@@ -49,7 +49,7 @@ runs:
           --api-token ${{ inputs.cc-api-token }} \
           --space-key ${{ inputs.cc-space-key }} \
           --page-id 2601943083 \
-          --page-title "Stream, teams and people" \
+          --page-title "Streams, teams and people" \
           --page-file teams.html \
           --username mathieu.frenette@nesto.ca
         rm teams.html
