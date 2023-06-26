@@ -3,7 +3,7 @@ module github.com/nestoca/actions/publish-people/go
 go 1.20
 
 require (
-	github.com/nestoca/jac v0.0.16
+	github.com/nestoca/jac v0.0.17
 	github.com/spf13/cobra v1.6.0
 )
 
