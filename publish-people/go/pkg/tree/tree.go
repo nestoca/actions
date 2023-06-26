@@ -1,4 +1,4 @@
-package values
+package tree
 
 import (
 	"github.com/nestoca/jac/pkg/live"
@@ -8,34 +8,37 @@ import (
 	"strings"
 )
 
-type Values struct {
+type Tree struct {
 	Streams []*Stream
 }
 
 type Stream struct {
-	Name          string
-	Description   string
-	ResourceLabel string
-	Teams         []*Team
-	Members       []*Member
+	*live.Group
+	Name        string
+	Description string
+	Teams       []*Team
+	Members     []*Member
 }
 
 type Team struct {
+	*live.Group
 	Name    string
 	Members []*Member
 }
 
 type Member struct {
+	*live.Person
 	Name  string
 	Email string
 	Roles []*Role
 }
 
 type Role struct {
+	*live.Group
 	Name string
 }
 
-func NewValues(catalog *live.Catalog) *Values {
+func NewTree(catalog *live.Catalog) *Tree {
 	var streams []*Stream
 	for _, streamGroup := range catalog.Root.Groups {
 		// Only consider streams
@@ -50,17 +53,18 @@ func NewValues(catalog *live.Catalog) *Values {
 
 		// Add stream
 		stream := &Stream{
-			Name:          streamGroup.GetDisplayName(false, true),
-			Description:   description,
-			ResourceLabel: streamGroup.GetValueOrDefault("resourceLabel", ""),
+			Group:       streamGroup,
+			Name:        streamGroup.GetDisplayName(false, true),
+			Description: description,
 		}
 		streams = append(streams, stream)
 
 		// Determine people belonging directly to that stream
 		for _, person := range streamGroup.Members {
 			member := &Member{
-				Name:  person.GetDisplayName(false),
-				Email: person.Spec.Email,
+				Person: person,
+				Name:   person.GetDisplayName(false),
+				Email:  person.Spec.Email,
 			}
 			stream.Members = append(stream.Members, member)
 
@@ -68,7 +72,8 @@ func NewValues(catalog *live.Catalog) *Values {
 			for _, roleGroup := range person.Groups {
 				if roleGroup.Spec.Type == "role" {
 					member.Roles = append(member.Roles, &Role{
-						Name: roleGroup.GetDisplayName(false, true),
+						Group: roleGroup,
+						Name:  roleGroup.GetDisplayName(false, true),
 					})
 				}
 			}
@@ -86,7 +91,8 @@ func NewValues(catalog *live.Catalog) *Values {
 
 			// Add team
 			team := &Team{
-				Name: teamGroup.GetDisplayName(false, true),
+				Group: teamGroup,
+				Name:  teamGroup.GetDisplayName(false, true),
 			}
 			stream.Teams = append(stream.Teams, team)
 
@@ -97,8 +103,9 @@ func NewValues(catalog *live.Catalog) *Values {
 				}
 
 				member := Member{
-					Name:  person.GetDisplayName(false),
-					Email: person.Spec.Email,
+					Person: person,
+					Name:   person.GetDisplayName(false),
+					Email:  person.Spec.Email,
 				}
 				team.Members = append(team.Members, &member)
 
@@ -106,7 +113,8 @@ func NewValues(catalog *live.Catalog) *Values {
 				for _, group := range person.Groups {
 					if group.Spec.Type == "role" {
 						member.Roles = append(member.Roles, &Role{
-							Name: group.GetDisplayName(false, true),
+							Group: group,
+							Name:  group.GetDisplayName(false, true),
 						})
 					}
 				}
@@ -118,7 +126,7 @@ func NewValues(catalog *live.Catalog) *Values {
 		}
 	}
 
-	return &Values{
+	return &Tree{
 		Streams: streams,
 	}
 }

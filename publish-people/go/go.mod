@@ -3,7 +3,7 @@ module github.com/nestoca/actions/publish-people/go
 go 1.20
 
 require (
-	github.com/nestoca/jac v0.0.19
+	github.com/nestoca/jac v0.0.20
 	github.com/spf13/cobra v1.6.0
 )
 
@@ -39,4 +39,4 @@ require (
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
-// replace github.com/nestoca/jac => /Users/mathieu/dev/nesto/jac
+//replace github.com/nestoca/jac => /Users/mathieu/dev/nesto/jac
