@@ -13,10 +13,11 @@ type Values struct {
 }
 
 type Stream struct {
-	Name        string
-	Description string
-	Teams       []*Team
-	Members     []*Member
+	Name          string
+	Description   string
+	ResourceLabel string
+	Teams         []*Team
+	Members       []*Member
 }
 
 type Team struct {
@@ -43,14 +44,15 @@ func NewValues(catalog *live.Catalog) *Values {
 		}
 
 		// Format description
-		description, _ := streamGroup.GetValue("description")
+		description := streamGroup.GetValueOrDefault("description", "")
 		description = convertBulletPointsToHTMLList(description)
 		description = convertLinks(description)
 
 		// Add stream
 		stream := &Stream{
-			Name:        streamGroup.GetDisplayName(false, true),
-			Description: description,
+			Name:          streamGroup.GetDisplayName(false, true),
+			Description:   description,
+			ResourceLabel: streamGroup.GetValueOrDefault("resourceLabel", ""),
 		}
 		streams = append(streams, stream)
 
