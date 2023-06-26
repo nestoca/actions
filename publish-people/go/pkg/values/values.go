@@ -2,6 +2,9 @@ package values
 
 import (
 	"github.com/nestoca/jac/pkg/live"
+	"html"
+	"sort"
+	"strings"
 )
 
 type Values struct {
@@ -9,85 +12,161 @@ type Values struct {
 }
 
 type Stream struct {
-	Group   *live.Group
-	Teams   []*Team
-	Members []*Member
+	Name        string
+	Description string
+	Teams       []*Team
+	Members     []*Member
 }
 
 type Team struct {
-	Group   *live.Group
+	Name    string
 	Members []*Member
 }
 
 type Member struct {
-	Person *live.Person
-	Roles  []*live.Group
+	Name  string
+	Email string
+	Roles []*Role
+}
+
+type Role struct {
+	Name string
 }
 
 func NewValues(catalog *live.Catalog) *Values {
 	var streams []*Stream
-	for _, group := range catalog.Root.Groups {
+	for _, streamGroup := range catalog.Root.Groups {
 		// Only consider streams
-		if group.Spec.Type != "stream" {
+		if streamGroup.Spec.Type != "stream" {
 			continue
 		}
 
+		// Format description
+		description, _ := streamGroup.GetValue("description")
+		description = convertBulletPointsToHTMLList(description)
+
 		// Add stream
 		stream := &Stream{
-			Group: group,
+			Name:        streamGroup.GetDisplayName(false, true),
+			Description: description,
 		}
 		streams = append(streams, stream)
 
 		// Determine people belonging directly to that stream
-		for _, person := range group.Members {
+		for _, person := range streamGroup.Members {
 			member := &Member{
-				Person: person,
+				Name:  person.GetDisplayName(false),
+				Email: person.Spec.Email,
 			}
 			stream.Members = append(stream.Members, member)
 
 			// Determine person's roles
-			for _, group := range person.Groups {
-				if group.Spec.Type == "role" {
-					member.Roles = append(member.Roles, group)
+			for _, roleGroup := range person.Groups {
+				if roleGroup.Spec.Type == "role" {
+					member.Roles = append(member.Roles, &Role{
+						Name: roleGroup.GetDisplayName(false, true),
+					})
 				}
 			}
 		}
 
 		// Determine teams belonging to that stream
-		for _, group := range group.Children {
+		sort.Slice(streamGroup.Children, func(i, j int) bool {
+			return streamGroup.Children[i].Name < streamGroup.Children[j].Name
+		})
+		for _, teamGroup := range streamGroup.Children {
 			// Only consider teams
-			if group.Spec.Type != "team" {
+			if teamGroup.Spec.Type != "team" {
 				continue
 			}
 
 			// Add team
 			team := &Team{
-				Group: group,
+				Name: teamGroup.GetDisplayName(false, true),
 			}
 			stream.Teams = append(stream.Teams, team)
 
-			for _, person := range group.Members {
+			for _, person := range teamGroup.Members {
 				// Only consider members not already direct members of the stream
-				if person.IsMemberOfGroup(stream.Group) {
+				if person.IsMemberOfGroup(streamGroup) {
 					continue
 				}
 
 				member := Member{
-					Person: person,
+					Name:  person.GetDisplayName(false),
+					Email: person.Spec.Email,
 				}
 				team.Members = append(team.Members, &member)
 
 				// Determine person's roles
 				for _, group := range person.Groups {
 					if group.Spec.Type == "role" {
-						member.Roles = append(member.Roles, group)
+						member.Roles = append(member.Roles, &Role{
+							Name: group.GetDisplayName(false, true),
+						})
 					}
 				}
 			}
+
+			sort.Slice(team.Members, func(i, j int) bool {
+				return team.Members[i].Name < team.Members[j].Name
+			})
 		}
 	}
 
 	return &Values{
 		Streams: streams,
 	}
+}
+
+func convertBulletPointsToHTMLList(bulletPoints string) string {
+	if bulletPoints == "" {
+		return ""
+	}
+	bulletPoints = html.EscapeString(bulletPoints)
+	lines := strings.Split(bulletPoints, "\n")
+	result := "<ul>\n"
+	result += convertLinesToHTML(lines, 0)
+	result += "</ul>"
+	return result
+}
+
+func convertLinesToHTML(lines []string, indentLevel int) string {
+	html := ""
+	for i := 0; i < len(lines); i++ {
+		line := lines[i]
+		trimmedLine := strings.TrimRight(line, " ")
+		if trimmedLine == "" {
+			continue
+		}
+
+		indent := strings.Repeat("  ", indentLevel)
+		item := strings.TrimPrefix(trimmedLine, "- ")
+		html += indent + "<li>" + item
+
+		nextIndentLevel := indentLevel + 1
+		childLines := getChildLines(lines[i+1:], nextIndentLevel)
+		if len(childLines) > 0 {
+			html += "<ul>\n"
+			html += convertLinesToHTML(childLines, nextIndentLevel)
+			html += indent + "  </ul>"
+			i += len(childLines)
+		}
+
+		html += "</li>\n"
+	}
+	return html
+}
+
+func getChildLines(lines []string, indentLevel int) []string {
+	childLines := make([]string, 0)
+	for _, line := range lines {
+		trimmedLine := strings.TrimRight(line, " ")
+		if strings.HasPrefix(trimmedLine, strings.Repeat("  ", indentLevel)+"- ") {
+			childLines = append(childLines, strings.TrimPrefix(trimmedLine, strings.Repeat("  ", indentLevel)+"- "))
+		} else if trimmedLine != "" {
+			break
+		}
+	}
+	return childLines
 }

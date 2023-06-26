@@ -35,4 +35,4 @@ require (
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
-// replace github.com/nestoca/jac v0.0.14 => ../../../../jac
+replace github.com/nestoca/jac => /Users/mathieu/dev/nesto/jac

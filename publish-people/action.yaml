@@ -43,7 +43,7 @@ runs:
         go run . render \
           --catalog ${{ inputs.catalog }} \
           --template ${{ inputs.template }} \
-          > teams.html
+          --output teams.html
         go run . publish \
           --base-url ${{ inputs.cc-base-url }} \
           --api-token ${{ inputs.cc-api-token }} \
