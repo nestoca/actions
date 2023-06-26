@@ -48,7 +48,7 @@ runs:
           --base-url ${{ inputs.cc-base-url }} \
           --api-token ${{ inputs.cc-api-token }} \
           --space-key ${{ inputs.cc-space-key }} \
-          --page-id 2601943083 \
+          --page-id 2245001341 \
           --page-title "Streams, teams and people" \
           --page-file teams.html \
           --username mathieu.frenette@nesto.ca
