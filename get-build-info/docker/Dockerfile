@@ -9,7 +9,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o get-build-info ./src
 
 # *********************************************************
 
-FROM alpine/git:2.36.3
+FROM alpine/git:v2.40.1
 
 COPY --from=build /app/get-build-info /get-build-info
 ENTRYPOINT ["sh", "-c", "cd ${WORK_DIR:-.}; /get-build-info"]
