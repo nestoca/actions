@@ -3,7 +3,7 @@ module github.com/nestoca/get-build-info
 go 1.16
 
 require (
-	github.com/TwinProduction/go-color v1.0.0
+	github.com/TwinProduction/go-color v1.4.0
 	github.com/coreos/go-semver v0.3.0
 	github.com/go-test/deep v1.0.7
 	github.com/spf13/cobra v1.1.3
