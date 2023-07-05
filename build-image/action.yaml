@@ -79,9 +79,9 @@ runs:
       shell: bash
       run: |
         if [[ "${{ inputs.repository }}" == "" ]]; then
-          echo "image_name=gcr.io/nesto-ci-78a3f2e6/${{ inputs.name }}" >> $GITHUB_OUTPUT
+          echo "image-name=gcr.io/nesto-ci-78a3f2e6/${{ inputs.name }}" >> $GITHUB_OUTPUT
         elif [[ "${{ inputs.repository }}" != "" ]]; then
-          echo "image_name=northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/${{ inputs.repository }}/${{ inputs.name }}" >> $GITHUB_OUTPUT
+          echo "image-name=northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/${{ inputs.repository }}/${{ inputs.name }}" >> $GITHUB_OUTPUT
         fi
     
     - name: Generate image tags
@@ -101,7 +101,7 @@ runs:
       with:
         # list of Docker images to use as base name for tags
         images: |-
-          ${{ steps.generate-name.outputs.image_name }}
+          ${{ steps.generate-name.outputs.image-name }}
         # generate Docker tags based on the following events/attributes
         tags: |- 
           ${{ steps.generate-tags.outputs.tags }}
