@@ -51,11 +51,11 @@ runs:
         shell: bash
         run: |
           if [[ ${{ inputs.build-from == 'project' }} ]]; then
-            echo "context='${{ inputs.project-dir }}'" >> $GITHUB_OUTPUT
+            echo "context=${{ inputs.project-dir }}" >> $GITHUB_OUTPUT
             echo "file=Dockerfile" >> $GITHUB_OUTPUT
           elif [[ ${{ inputs.build-from == 'project' }} ]]; then
             echo "context=." >> $GITHUB_OUTPUT
-            echo "file='${{ inputs.project-dir }}/Dockerfile'" >> $GITHUB_OUTPUT
+            echo "file=${{ inputs.project-dir }}/Dockerfile" >> $GITHUB_OUTPUT
           else
             echo "Invalid value for 'build-from' input: '${{ inputs.build-from }}'"
             exit 1
