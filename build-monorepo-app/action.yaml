@@ -53,7 +53,7 @@ runs:
           if [[ ${{ inputs.build-from == 'project' }} ]]; then
             echo "context=${{ inputs.project-dir }}" >> $GITHUB_OUTPUT
             echo "file=Dockerfile" >> $GITHUB_OUTPUT
-          elif [[ ${{ inputs.build-from == 'project' }} ]]; then
+          elif [[ ${{ inputs.build-from == 'root' }} ]]; then
             echo "context=." >> $GITHUB_OUTPUT
             echo "file=${{ inputs.project-dir }}/Dockerfile" >> $GITHUB_OUTPUT
           else
