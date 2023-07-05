@@ -67,7 +67,7 @@ runs:
           name: ${{ steps.info.outputs.project }}
           tags: ${{ steps.info.outputs.docker-tag }},latest
           context: ${{ steps.context.outputs.context }}
-          file: ${{ steps.context.outputs.context }}
+          docker-file: ${{ steps.context.outputs.file }}
           key: ${{ inputs.docker-sa-key }}
           secrets: |-
             NPM_TOKEN: ${{ inputs.npm-token }}
