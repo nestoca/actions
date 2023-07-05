@@ -25,6 +25,11 @@ inputs:
     required: false
     default: .
 
+  docker-file:
+    description: (Optional) File path to `Dockerfile` (defaults to `<context>/Dockerfile`).
+    required: false
+    default: ""
+
   repository:
     description: >-
       (Optional) The Google Artifact Registry repo to push the image to. If unset, image will be pushed to Google Container Registry. 
@@ -105,6 +110,7 @@ runs:
       uses: docker/build-push-action@v4
       with:
         context: ${{ inputs.context }}
+        file: ${{ inputs.docker-file }}
         push: ${{ inputs.push }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}

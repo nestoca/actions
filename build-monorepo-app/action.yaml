@@ -23,6 +23,13 @@ inputs:
     description: Service account key to authenticate access to GCP container registry
     required: true
 
+  build-from:
+    description: |-
+      Either `project` (the default) to run docker build from project's sub-directory,
+      or `root` to run docker build from repo's root directory
+    required: false
+    default: "project"
+
 runs:
   using: composite
   steps:
@@ -39,12 +46,28 @@ runs:
         with:
           work-dir: ${{ inputs.project-dir }}
 
+      - name: Determine docker build context and file
+        id: context
+        shell: bash
+        run: |
+          if [[ ${{ inputs.build-from == 'project' }} ]]; then
+            echo "context='${{ inputs.project-dir }}'" >> $GITHUB_OUTPUT
+            echo "file=Dockerfile" >> $GITHUB_OUTPUT
+          elif [[ ${{ inputs.build-from == 'project' }} ]]; then
+            echo "context=." >> $GITHUB_OUTPUT
+            echo "file='${{ inputs.project-dir }}/Dockerfile'" >> $GITHUB_OUTPUT
+          else
+            echo "Invalid value for 'build-from' input: '${{ inputs.build-from }}'"
+            exit 1
+          fi
+
       - name: Build image
         uses: nestoca/actions/build-image@master
         with:
           name: ${{ steps.info.outputs.project }}
           tags: ${{ steps.info.outputs.docker-tag }},latest
-          context: ${{ inputs.project-dir }}
+          context: ${{ steps.context.outputs.context }}
+          file: ${{ steps.context.outputs.context }}
           key: ${{ inputs.docker-sa-key }}
           secrets: |-
             NPM_TOKEN: ${{ inputs.npm-token }}
