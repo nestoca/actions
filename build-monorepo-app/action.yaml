@@ -1,0 +1,66 @@
+name: Build and promote monorepo app
+description: Build and promote an app within monorepo
+
+inputs:
+
+  project-dir:
+    description: Sub-directory containing app to build
+    required: true
+
+  gh-token:
+    description: Token to authenticate access to github repo being built
+    required: true
+
+  gh-release-token:
+    description: Token to authenticate access to infra github repo for promoting build
+    required: true
+
+  npm-token:
+    description: Token to authenticate access to npm registry
+    required: true
+
+  docker-sa-key:
+    description: Service account key to authenticate access to GCP container registry
+    required: true
+
+runs:
+  using: composite
+  steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ inputs.gh-token }}
+
+      - name: Get build info
+        id: info
+        uses: nestoca/actions/get-build-info@v1
+        with:
+          work-dir: ${{ inputs.project-dir }}
+
+      - name: Build image
+        uses: nestoca/actions/build-image@master
+        with:
+          name: ${{ steps.info.outputs.project }}
+          tags: ${{ steps.info.outputs.docker-tag }},latest
+          key: ${{ inputs.docker-sa-key }}
+          secrets: |-
+            NPM_TOKEN: ${{ inputs.npm-token }}
+        #   push: ${{ (github.ref == 'refs/heads/master' && 'true') || 'false' }}
+
+      - name: Tag commit
+        if: github.ref == 'refs/heads/master'
+        uses: silphid/actions/tag-commit@v1
+        with:
+          tag: ${{ steps.info.outputs.git-tag }}
+
+      - name: Promote build to platform environment via Codefresh CD
+        uses: nestoca/actions/promote-build@v1
+        if: github.ref == 'refs/heads/master'
+        with:
+          version: ${{ steps.info.outputs.version }}
+          project: ${{ steps.info.outputs.project }}
+          env: qa
+          via: codefresh
+          token: ${{ inputs.gh-release-token }}
