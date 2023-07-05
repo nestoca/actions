@@ -28,7 +28,7 @@ inputs:
       Either `project` (the default) to run docker build from project's sub-directory,
       or `root` to run docker build from repo's root directory
     required: false
-    default: "project"
+    default: root
 
 runs:
   using: composite
