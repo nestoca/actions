@@ -44,7 +44,7 @@ runs:
         with:
           name: ${{ steps.info.outputs.project }}
           tags: ${{ steps.info.outputs.docker-tag }},latest
-          context: $${{ inputs.project-dir }}
+          context: ${{ inputs.project-dir }}
           key: ${{ inputs.docker-sa-key }}
           secrets: |-
             NPM_TOKEN: ${{ inputs.npm-token }}
