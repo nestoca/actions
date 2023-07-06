@@ -58,7 +58,7 @@ jobs:
         with:
           glob: promote-build/promote-codefresh/action.yaml
           search: |-
-            (?<=^\s*image: docker://.+/actions/promote-codefresh:).+$
+            (?<=^\s*northamerica.+/actions/promote-codefresh:).+$
           replace: |-
             ${{ steps.info.outputs.docker-tag }}
           message: |-
