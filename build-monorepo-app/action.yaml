@@ -15,8 +15,8 @@ inputs:
     description: Token to authenticate access to infra github repo for promoting build
     required: true
 
-  npm-rc:
-    description: The .npmrc file to mount in docker build to authenticate access to our GitHub NPM registry
+  npm-token:
+    description: The token to inject into `.npmrc` file mounted in docker build to authenticate access to our GitHub NPM registry
     required: false
 
   docker-sa-key:
@@ -62,10 +62,11 @@ runs:
           fi
 
       - name: Generate .npmrc file
-        if: inputs.npm-rc
+        if: inputs.npm-token
         shell: bash
         run: |
-          echo "${{ inputs.npm-rc }}" > "${{ steps.context.outputs.context }}/.npmrc"
+          echo "@nestoca:registry=https://npm.pkg.github.com
+          //npm.pkg.github.com/:_authToken=${{ inputs.npm-token }}" > "${{ steps.context.outputs.context }}/.npmrc"
 
       - name: Build image
         uses: nestoca/actions/build-image@master
@@ -86,7 +87,7 @@ runs:
           tag: ${{ steps.info.outputs.git-tag }}
 
       - name: Promote build to platform environment via Codefresh CD
-        uses: nestoca/actions/promote-build@v1
+        uses: nestoca/actions/promote-build@master
         if: github.ref == 'refs/heads/master'
         with:
           version: ${{ steps.info.outputs.version }}
