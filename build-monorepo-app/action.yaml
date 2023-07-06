@@ -76,7 +76,7 @@ runs:
           context: ${{ steps.context.outputs.context }}
           docker-file: ${{ steps.context.outputs.file }}
           key: ${{ inputs.docker-sa-key }}
-          secrets-files: |
+          secret-files: |
             npmrc: .npmrc
         #   push: ${{ (github.ref == 'refs/heads/master' && 'true') || 'false' }}
 
