@@ -77,7 +77,7 @@ runs:
           docker-file: ${{ steps.context.outputs.file }}
           key: ${{ inputs.docker-sa-key }}
           secret-files: |
-            npmrc: .npmrc
+            npmrc=.npmrc
         #   push: ${{ (github.ref == 'refs/heads/master' && 'true') || 'false' }}
 
       - name: Tag commit
