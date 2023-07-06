@@ -15,9 +15,9 @@ inputs:
     description: Token to authenticate access to infra github repo for promoting build
     required: true
 
-  npm-token:
-    description: Token to authenticate access to npm registry
-    required: true
+  npm-rc:
+    description: The .npmrc file to mount in docker build to authenticate access to our GitHub NPM registry
+    required: false
 
   docker-sa-key:
     description: Service account key to authenticate access to GCP container registry
@@ -61,6 +61,12 @@ runs:
             exit 1
           fi
 
+      - name: Generate .npmrc file
+        if: inputs.npm-rc
+        shell: bash
+        run: |
+          echo "${{ inputs.npm-rc }}" > "${{ steps.context.outputs.context }}/.npmrc"
+
       - name: Build image
         uses: nestoca/actions/build-image@master
         with:
@@ -69,8 +75,8 @@ runs:
           context: ${{ steps.context.outputs.context }}
           docker-file: ${{ steps.context.outputs.file }}
           key: ${{ inputs.docker-sa-key }}
-          secrets: |-
-            NPM_TOKEN: ${{ inputs.npm-token }}
+          secrets-files: |
+            npmrc: .npmrc
         #   push: ${{ (github.ref == 'refs/heads/master' && 'true') || 'false' }}
 
       - name: Tag commit
