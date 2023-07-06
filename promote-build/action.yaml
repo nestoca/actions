@@ -42,7 +42,7 @@ runs:
   steps:
 
     - if: inputs.via == 'codefresh'
-      uses: nestoca/actions/promote-build/promote-codefresh@v1
+      uses: nestoca/actions/promote-build/promote-codefresh@master
       with:
         version: ${{ inputs.version }}
         releases: ${{ inputs.releases }}
