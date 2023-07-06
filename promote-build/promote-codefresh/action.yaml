@@ -45,7 +45,7 @@ runs:
           --env GENERIC_CHART_VERSION="0.46.0" \
           --env REGISTRY="DUMMY_REGISTRY" \
           --volume "${{ github.workspace }}/infra:/infra" \
-          northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/promote-codefresh:0.1.0
+          northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/promote-codefresh:0.4.0
 
     - name: Push changes
       shell: bash
