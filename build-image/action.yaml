@@ -59,6 +59,12 @@ inputs:
       See: https://docs.docker.com/build/ci/github-actions/secrets/
     required: false
     default: ""
+
+  platforms:
+    description: >-
+      (Optional) Specify which platforms to build images for
+    required: false
+    default: "linux/amd64,linux/arm64,linux/arm/v8"
       
 runs:
   using: composite
