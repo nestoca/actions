@@ -126,12 +126,12 @@ func (o *PromoteOptions) patch(release string, isNew bool) (map[string]map[strin
 		"IsNew":   isNew,
 		"Env":     env(),
 	}); err != nil {
-		return make(map[string]map[string]interface{}), err
+		return make(map[string]map[string]interface{}), fmt.Errorf("executing release template: %w", err)
 	}
 
 	var out map[string]map[string]interface{}
 	if err := yaml.Unmarshal(buf.Bytes(), &out); err != nil {
-		return make(map[string]map[string]interface{}), err
+		return make(map[string]map[string]interface{}), fmt.Errorf("unmarshalling template result: %w", err)
 	}
 
 	return out, nil
