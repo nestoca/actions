@@ -62,9 +62,10 @@ inputs:
 
   platforms:
     description: >-
-      (Optional) Specify which platforms to build images for
+      (Optional) Specify which platforms to build images for (eg: "linux/amd64,linux/arm64,linux/arm/v8").
+      Defaults to "local", which uses the builder's native architecture.
     required: false
-    default: "linux/amd64,linux/arm64,linux/arm/v8"
+    default: local
       
 runs:
   using: composite
