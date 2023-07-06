@@ -92,6 +92,7 @@ runs:
         with:
           version: ${{ steps.info.outputs.version }}
           project: ${{ steps.info.outputs.project }}
+          releases: ${{ steps.info.outputs.releases }}
           env: qa
           via: codefresh
           token: ${{ inputs.gh-release-token }}
