@@ -81,7 +81,7 @@ runs:
           //npm.pkg.github.com/:_authToken=${{ inputs.npm-token }}" > "${{ steps.setup.outputs.context }}/.npmrc"
 
       - name: Build image
-        uses: nestoca/actions/build-image@master
+        uses: nestoca/actions/build-image@v1
         with:
           name: ${{ steps.info.outputs.project }}
           tags: ${{ steps.info.outputs.docker-tag }},latest
@@ -99,7 +99,7 @@ runs:
 
       - name: Promote build to platform environment via Codefresh CD
         if: '!steps.setup.outputs.dry-run'
-        uses: nestoca/actions/promote-build@master
+        uses: nestoca/actions/promote-build@v1
         with:
           project: ${{ steps.info.outputs.project }}
           releases: ${{ steps.info.outputs.releases }}
