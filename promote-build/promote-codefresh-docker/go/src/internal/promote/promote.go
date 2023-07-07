@@ -42,6 +42,10 @@ var (
 )
 
 func (o *PromoteOptions) Promote() error {
+	if len(o.Releases) == 0 {
+		return fmt.Errorf("no releases specified")
+	}
+
 	logging.Log("Load existing releases.yaml")
 	bytes, err := ioutil.ReadFile(releasesFile)
 	if err != nil {
@@ -64,6 +68,10 @@ func (o *PromoteOptions) Promote() error {
 
 	// Patch releases.yaml
 	for _, release := range o.Releases {
+		if release == "" {
+			return fmt.Errorf("empty release name")
+		}
+
 		entry, exists := doc[release]
 		isNew := !exists
 		if isNew {
