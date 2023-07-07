@@ -92,13 +92,13 @@ runs:
           push: ${{ !steps.prepare.outputs.dry-run || 'false' }}
 
       - name: Tag commit
-        if: "!steps.prepare.outputs.dry-run"
+        if: '!steps.prepare.outputs.dry-run'
         uses: silphid/actions/tag-commit@v1
         with:
           tag: ${{ steps.info.outputs.git-tag }}
 
       - name: Promote build to platform environment via Codefresh CD
-        if: "!steps.prepare.outputs.dry-run"
+        if: '!steps.prepare.outputs.dry-run'
         uses: nestoca/actions/promote-build@master
         with:
           project: ${{ steps.info.outputs.project }}
