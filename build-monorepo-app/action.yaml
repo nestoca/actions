@@ -47,8 +47,8 @@ runs:
           fetch-depth: 0
           token: ${{ inputs.gh-token }}
 
-      - name: Prepare build
-        id: prepare
+      - name: Setup build
+        id: setup
         shell: bash
         run: |
           # Determine context dir and docker file
@@ -78,27 +78,27 @@ runs:
         shell: bash
         run: |
           echo "@nestoca:registry=https://npm.pkg.github.com
-          //npm.pkg.github.com/:_authToken=${{ inputs.npm-token }}" > "${{ steps.context.outputs.context }}/.npmrc"
+          //npm.pkg.github.com/:_authToken=${{ inputs.npm-token }}" > "${{ steps.setup.outputs.context }}/.npmrc"
 
       - name: Build image
         uses: nestoca/actions/build-image@master
         with:
           name: ${{ steps.info.outputs.project }}
           tags: ${{ steps.info.outputs.docker-tag }},latest
-          context: ${{ steps.context.outputs.context }}
-          docker-file: ${{ steps.context.outputs.file }}
+          context: ${{ steps.setup.outputs.context }}
+          docker-file: ${{ steps.setup.outputs.file }}
           key: ${{ inputs.docker-sa-key }}
           secret-files: npmrc=.npmrc
-          push: ${{ !steps.prepare.outputs.dry-run || 'false' }}
+          push: ${{ !steps.setup.outputs.dry-run || 'false' }}
 
       - name: Tag commit
-        if: '!steps.prepare.outputs.dry-run'
+        if: '!steps.setup.outputs.dry-run'
         uses: silphid/actions/tag-commit@v1
         with:
           tag: ${{ steps.info.outputs.git-tag }}
 
       - name: Promote build to platform environment via Codefresh CD
-        if: '!steps.prepare.outputs.dry-run'
+        if: '!steps.setup.outputs.dry-run'
         uses: nestoca/actions/promote-build@master
         with:
           project: ${{ steps.info.outputs.project }}
@@ -109,7 +109,7 @@ runs:
           token: ${{ inputs.gh-release-token }}
 
       - name: Dry run
-        if: steps.prepare.outputs.dry-run
+        if: steps.setup.outputs.dry-run
         shell: bash
         run: |
           echo "*** Dry run ***"
