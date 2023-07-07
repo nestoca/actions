@@ -43,7 +43,7 @@ runs:
           --env RELEASE_TEMPLATE="/infra/templates/promote-service/release.yaml.gotmpl" \
           --env VALUES_TEMPLATE="/infra/templates/promote-service/values.yaml.gotmpl" \
           --volume "${{ github.workspace }}/infra:/infra" \
-          northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/promote-codefresh:0.4.0
+          northamerica-northeast1-docker.pkg.dev/nesto-ci-78a3f2e6/actions/promote-codefresh:0.6.0
 
     - name: Push changes
       shell: bash
