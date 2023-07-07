@@ -1,10 +1,10 @@
 name: Build and promote monorepo app
-description: Build and promote an app within monorepo
+description: Build app within sub-directory of monorepo, push image, tag commit and promote build to qa environment.
 
 inputs:
 
   project-dir:
-    description: Sub-directory containing app to build
+    description: Sub-directory containing app to build.
     required: true
 
   gh-token:
@@ -12,23 +12,30 @@ inputs:
     required: true
 
   gh-release-token:
-    description: Token to authenticate access to infra github repo for promoting build
+    description: Token to authenticate access to infra github repo for promoting build.
     required: true
 
   npm-token:
-    description: The token to inject into `.npmrc` file mounted in docker build to authenticate access to our GitHub NPM registry
+    description: The token to inject into `.npmrc` file mounted in docker build to authenticate access to our GitHub NPM registry.
     required: false
 
   docker-sa-key:
-    description: Service account key to authenticate access to GCP container registry
+    description: Service account key to authenticate access to GCP container registry.
     required: true
 
   build-from:
-    description: |-
+    description: |
       Either `project` (the default) to run docker build from project's sub-directory,
-      or `root` to run docker build from repo's root directory
+      or `root` to run docker build from repo's root directory.
     required: false
     default: project
+
+  dry-run:
+    description: |
+      Whether to perform a dry run, which will not push docker image to registry, tag commit
+      nor promote release build to qa environment.
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -40,16 +47,11 @@ runs:
           fetch-depth: 0
           token: ${{ inputs.gh-token }}
 
-      - name: Get build info
-        id: info
-        uses: nestoca/actions/get-build-info@v1
-        with:
-          work-dir: ${{ inputs.project-dir }}
-
-      - name: Determine docker build context and file
-        id: context
+      - name: Prepare build
+        id: prepare
         shell: bash
         run: |
+          # Determine context dir and docker file
           if [[ ${{ inputs.build-from }} == 'project' ]]; then
             echo "context=${{ inputs.project-dir }}" >> $GITHUB_OUTPUT
             echo "file=Dockerfile" >> $GITHUB_OUTPUT
@@ -60,6 +62,16 @@ runs:
             echo "Invalid value for 'build-from' input: '${{ inputs.build-from }}'"
             exit 1
           fi
+
+          # Determine if this is a dry run
+          echo "dry-run=${{ github.ref != 'refs/heads/master' || inputs.dry-run || 'false' }}" >> $GITHUB_OUTPUT
+
+      - name: Get build info
+        id: info
+        uses: nestoca/actions/get-build-info@v1
+        with:
+          work-dir: ${{ inputs.project-dir }}
+          git-tag-prefix: ${{ inputs.project-dir }}/v
 
       - name: Generate .npmrc file
         if: inputs.npm-token
@@ -76,23 +88,33 @@ runs:
           context: ${{ steps.context.outputs.context }}
           docker-file: ${{ steps.context.outputs.file }}
           key: ${{ inputs.docker-sa-key }}
-          secret-files: |
-            npmrc=.npmrc
-        #   push: ${{ (github.ref == 'refs/heads/master' && 'true') || 'false' }}
+          secret-files: npmrc=.npmrc
+          push: ${{ !steps.prepare.outputs.dry-run || 'false' }}
 
       - name: Tag commit
-        if: github.ref == 'refs/heads/master'
+        if: "!steps.prepare.outputs.dry-run"
         uses: silphid/actions/tag-commit@v1
         with:
           tag: ${{ steps.info.outputs.git-tag }}
 
       - name: Promote build to platform environment via Codefresh CD
+        if: "!steps.prepare.outputs.dry-run"
         uses: nestoca/actions/promote-build@master
-        if: github.ref == 'refs/heads/master'
         with:
-          version: ${{ steps.info.outputs.version }}
           project: ${{ steps.info.outputs.project }}
           releases: ${{ steps.info.outputs.releases }}
+          version: ${{ steps.info.outputs.version }}
           env: qa
           via: codefresh
           token: ${{ inputs.gh-release-token }}
+
+      - name: Dry run
+        if: steps.prepare.outputs.dry-run
+        shell: bash
+        run: |
+          echo "*** Dry run ***"
+          echo "Project: ${{ steps.info.outputs.project }}"
+          echo "Releases: ${{ steps.info.outputs.releases }}"
+          echo "Version: ${{ steps.info.outputs.version }}"
+          echo "Git tag: ${{ steps.info.outputs.git-tag }}"
+          echo "Docker tag: ${{ steps.info.outputs.docker-tag }}"
