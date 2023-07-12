@@ -98,7 +98,7 @@ runs:
           # platforms: linux/amd64
           push: ${{ !steps.setup.outputs.dry-run || 'false' }}
           build-args: |
-            ${{ steps.info.outputs.docker-tag }}
+            DOCKER_TAG=${{ steps.info.outputs.docker-tag }}
             ${{ inputs.build-args }}
 
       - name: Tag commit
