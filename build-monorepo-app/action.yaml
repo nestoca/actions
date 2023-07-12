@@ -97,7 +97,9 @@ runs:
           secret-files: npmrc=.npmrc
           # platforms: linux/amd64
           push: ${{ !steps.setup.outputs.dry-run || 'false' }}
-          build-args: ${{ inputs.build-args }}
+          build-args: |
+            ${{ steps.info.outputs.docker-tag }}
+            ${{ inputs.build-args }}
 
       - name: Tag commit
         if: '!steps.setup.outputs.dry-run'
