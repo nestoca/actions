@@ -66,6 +66,14 @@ inputs:
       Defaults to "local", which uses the builder's native architecture.
     required: false
     default: local
+
+  build-args:
+    description: >-
+      (Optional) Build-time variables to pass to the build. Format is a multi-line string,
+      each line in the form `"key=value"`. Quoting is only required if the value contains whitespace.
+      See: https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg
+    required: false
+    default: ""
       
 runs:
   using: composite
@@ -133,3 +141,4 @@ runs:
         secrets: ${{ inputs.secrets }}
         secret-files: ${{ inputs.secret-files }}
         platforms: ${{ inputs.platforms }}
+        build-args: ${{ inputs.build-args }}

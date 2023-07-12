@@ -37,6 +37,12 @@ inputs:
     required: false
     default: 'false'
 
+  build-args:
+    description: |
+      Additional build arguments to pass to docker build command.
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
@@ -89,7 +95,9 @@ runs:
           docker-file: ${{ steps.setup.outputs.file }}
           key: ${{ inputs.docker-sa-key }}
           secret-files: npmrc=.npmrc
+          # platforms: linux/amd64
           push: ${{ !steps.setup.outputs.dry-run || 'false' }}
+          build-args: ${{ inputs.build-args }}
 
       - name: Tag commit
         if: '!steps.setup.outputs.dry-run'
