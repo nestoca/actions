@@ -70,7 +70,7 @@ runs:
           fi
 
           # Determine if this is a dry run
-          echo "dry-run=${{ github.ref != 'refs/heads/master' || github.ref != 'refs/remotes/origin/master' || inputs.dry-run || 'false' }}" >> $GITHUB_OUTPUT
+          echo "dry-run=${{ github.ref != 'refs/heads/master' || inputs.dry-run || 'false' }}" >> $GITHUB_OUTPUT
 
       - name: Get build info
         id: info
