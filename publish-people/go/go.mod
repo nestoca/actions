@@ -3,7 +3,7 @@ module github.com/nestoca/actions/publish-people/go
 go 1.20
 
 require (
-	github.com/nestoca/jac v0.0.21
+	github.com/nestoca/jac v0.0.29
 	github.com/spf13/cobra v1.6.0
 )
 
@@ -24,8 +24,8 @@ require (
 	github.com/silphid/ppds v0.0.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/exp v0.0.0-20230515195305-f3d0a9c9a5cc // indirect
-	golang.org/x/net v0.3.1-0.20221206200815-1e63c2f08a10 // indirect
-	golang.org/x/text v0.5.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 	gopkg.in/godo.v2 v2.0.9 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
