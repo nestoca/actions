@@ -3,7 +3,7 @@ module github.com/nestoca/promote-codefresh
 go 1.16
 
 require (
-	github.com/TwinProduction/go-color v1.0.0
+	github.com/TwinProduction/go-color v1.4.0
 	github.com/go-test/deep v1.0.7
 	github.com/spf13/cobra v1.1.3
 	github.com/stretchr/testify v1.7.0
