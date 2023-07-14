@@ -71,11 +71,6 @@ runs:
 
           # Determine if this is a dry run
           echo "dry-run=${{ github.ref != 'refs/heads/master' || inputs.dry-run || 'false' }}" >> $GITHUB_OUTPUT
-          # DEBUG statements
-          echo "github.ref = ${{ github.ref }}"
-          echo "inputs.dry-run = ${{ inputs.dry-run }}"
-          echo "dry-run=${{ github.ref != 'refs/heads/master' || inputs.dry-run || 'false' }}"
-          
 
       - name: Get build info
         id: info
@@ -94,26 +89,28 @@ runs:
       - name: Build image
         uses: nestoca/actions/build-image@v1
         with:
+          # platforms: linux/amd64
           name: ${{ steps.info.outputs.project }}
           tags: ${{ steps.info.outputs.docker-tag }},latest
           context: ${{ steps.setup.outputs.context }}
           docker-file: ${{ steps.setup.outputs.file }}
           key: ${{ inputs.docker-sa-key }}
           secret-files: npmrc=.npmrc
-          # platforms: linux/amd64
-          push: ${{ !steps.setup.outputs.dry-run || 'false' }}
+          # This might look confusing, but it's github's way of doing a ternary operator. 
+          #If dry-run is true, then push is false, otherwise push is true.
+          push: ${{ steps.setup.outputs.dry-run == 'false' && 'true' || 'false' }}
           build-args: |
             DOCKER_TAG=${{ steps.info.outputs.docker-tag }}
             ${{ inputs.build-args }}
 
       - name: Tag commit
-        if: '!steps.setup.outputs.dry-run'
+        if: steps.setup.outputs.dry-run == 'false'
         uses: silphid/actions/tag-commit@v1
         with:
           tag: ${{ steps.info.outputs.git-tag }}
 
       - name: Promote build to platform environment via Codefresh CD
-        if: '!steps.setup.outputs.dry-run'
+        if: steps.setup.outputs.dry-run == 'false'
         uses: nestoca/actions/promote-build@v1
         with:
           project: ${{ steps.info.outputs.project }}
@@ -124,7 +121,7 @@ runs:
           token: ${{ inputs.gh-release-token }}
 
       - name: Dry run
-        if: steps.setup.outputs.dry-run
+        if: steps.setup.outputs.dry-run == 'true'
         shell: bash
         run: |
           echo "*** Dry run ***"
