@@ -71,6 +71,8 @@ runs:
 
           # Determine if this is a dry run
           echo "dry-run=${{ github.ref != 'refs/heads/master' || inputs.dry-run || 'false' }}" >> $GITHUB_OUTPUT
+          echo "github.ref = ${{ github.ref }}"
+          echo "dry-run=${{ steps.setup.outputs.dry-run }}"
 
       - name: Get build info
         id: info
